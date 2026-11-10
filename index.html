@@ -201,6 +201,13 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .switch input:checked+span::after{transform:translateX(18px)}
 .switch input:focus-visible+span{outline:2px solid var(--in);outline-offset:2px}
 .danger{color:var(--out);font-weight:600}
+.cfg-names{display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--line);padding-top:12px}
+.adm-form{display:flex;flex-direction:column;gap:10px;border:1px solid var(--line-gold);border-radius:14px;padding:12px}
+.adm-row{display:flex;flex-direction:column;gap:8px;padding:12px 0;border-top:1px solid var(--line)}
+.adm-row:first-child{border-top:0}
+.adm-top{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.adm-top b{font-family:var(--display)}
+.tag{font-size:11px;font-weight:700;color:var(--on-accent);background:var(--gold-grad);border-radius:999px;padding:2px 8px;margin-left:6px}
 
 /* ---------- Barra de abas + botão + ---------- */
 .tabbar{position:fixed;left:0;right:0;bottom:0;z-index:8;background:rgba(12,12,13,.9);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
@@ -298,46 +305,26 @@ input::placeholder{color:var(--faint)}
   <form id="loginForm" novalidate>
     <img class="logo" src="logo.png" alt="" aria-hidden="true">
     <h1>Finanças da Casa</h1>
-    <p>Entre com o e-mail e a senha de vocês.</p>
-    <label for="lEmail">E-mail<input id="lEmail" type="email" autocomplete="username" required></label>
+    <p>Entre com o usuário e a senha do casal.</p>
+    <label for="lUser">Usuário<input id="lUser" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" required></label>
     <label for="lSenha">Senha<input id="lSenha" type="password" autocomplete="current-password" required></label>
     <div class="err" id="lErr" role="alert"></div>
     <button class="btn pri" type="submit" id="lBtn">Entrar</button>
-    <button class="link-btn" type="button" id="forgotBtn">Esqueci minha senha</button>
-    <div class="first" id="firstBox" hidden>
-      <span>Primeiro acesso?</span>
-      <button class="btn sec" type="button" id="signupBtn">Criar minha conta</button>
+    <p class="hint" style="text-align:center">Esqueceu a senha? Peça para quem criou a conta de vocês trocar.</p>
+  </form>
+  <form id="setupForm" hidden novalidate>
+    <img class="logo" src="logo.png" alt="" aria-hidden="true">
+    <h1>Configurar o app</h1>
+    <p>Este é o primeiro acesso. Crie a conta do seu casal. Ela será a conta de administrador, a única que pode criar contas para outros casais.</p>
+    <label for="stUser">Usuário do casal<input id="stUser" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="ex.: gean.e.esposa" autocomplete="username"></label>
+    <div class="row2">
+      <label for="stN1">Seu nome<input id="stN1" maxlength="30" placeholder="Gean"></label>
+      <label for="stN2">Nome do par<input id="stN2" maxlength="30" placeholder="Esposa"></label>
     </div>
-  </form>
-  <form id="signupForm" hidden novalidate>
-    <img class="logo" src="logo.png" alt="" aria-hidden="true">
-    <h1>Criar conta</h1>
-    <p id="suInfo">Só duas contas podem ser criadas: a sua e a da sua esposa. Depois disso o cadastro fecha sozinho.</p>
-    <label for="suNome">Seu nome<input id="suNome" maxlength="30" autocomplete="given-name" placeholder="Ex.: Gean"></label>
-    <label for="suEmail">E-mail<input id="suEmail" type="email" autocomplete="username"></label>
-    <label for="suSenha">Senha (mínimo 6 caracteres)<input id="suSenha" type="password" autocomplete="new-password"></label>
-    <label for="suSenha2">Repita a senha<input id="suSenha2" type="password" autocomplete="new-password"></label>
-    <div class="err" id="suErr" role="alert"></div>
-    <button class="btn pri" type="submit" id="suBtn">Criar conta e entrar</button>
-    <button class="link-btn" type="button" id="suBack">Já tenho conta</button>
-  </form>
-  <form id="forgotForm" hidden novalidate>
-    <img class="logo" src="logo.png" alt="" aria-hidden="true">
-    <h1>Recuperar senha</h1>
-    <p>Digite seu e-mail. Vamos mandar um link para você criar uma senha nova.</p>
-    <label for="fgEmail">E-mail<input id="fgEmail" type="email" autocomplete="username"></label>
-    <div class="err" id="fgErr" role="alert"></div>
-    <button class="btn pri" type="submit" id="fgBtn">Enviar link</button>
-    <button class="link-btn" type="button" id="backLogin">Voltar para entrar</button>
-  </form>
-  <form id="newPassForm" hidden novalidate>
-    <img class="logo" src="logo.png" alt="" aria-hidden="true">
-    <h1>Criar senha nova</h1>
-    <p>Escolha uma senha com pelo menos 6 caracteres.</p>
-    <label for="np1">Nova senha<input id="np1" type="password" autocomplete="new-password"></label>
-    <label for="np2">Repita a senha<input id="np2" type="password" autocomplete="new-password"></label>
-    <div class="err" id="npErr" role="alert"></div>
-    <button class="btn pri" type="submit" id="npBtn">Salvar senha</button>
+    <label for="stS1">Senha (mínimo 6 caracteres)<input id="stS1" type="password" autocomplete="new-password"></label>
+    <label for="stS2">Repita a senha<input id="stS2" type="password" autocomplete="new-password"></label>
+    <div class="err" id="stErr" role="alert"></div>
+    <button class="btn pri" type="submit" id="stBtn">Criar e entrar</button>
   </form>
 </div>
 
@@ -470,7 +457,33 @@ input::placeholder{color:var(--faint)}
     <!-- ===== AJUSTES ===== -->
     <section class="tab" data-tab="ajustes" aria-label="Ajustes" hidden>
       <div class="card">
-        <div class="me"><div class="avatar" id="meAvatar">?</div><div><b id="meName">—</b><div class="hint" id="meEmail"></div></div></div>
+        <div class="me"><div class="avatar" id="meAvatar">?</div><div><b id="meName">—</b><div class="hint" id="meUser"></div></div></div>
+        <form class="cfg-names" id="namesForm">
+          <div class="row2">
+            <label for="nm1">Pessoa 1<input id="nm1" maxlength="30"></label>
+            <label for="nm2">Pessoa 2<input id="nm2" maxlength="30"></label>
+          </div>
+          <div class="row2" style="align-items:end">
+            <label for="deviceWho">Quem usa este celular<select id="deviceWho"></select></label>
+            <button class="chip-btn" type="submit" style="height:44px">Salvar nomes</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card" id="adminCard" hidden>
+        <div class="card-head"><h2>Casais do app</h2><button class="chip-btn" id="admNewBtn">+ Novo casal</button></div>
+        <p class="hint" style="margin:0">Você vê só o usuário e os nomes. As finanças de cada casal ficam fechadas só para eles, e eles não veem que outros casais usam o app.</p>
+        <form class="adm-form" id="admForm" hidden novalidate>
+          <label for="admUser">Usuário<input id="admUser" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="ex.: ana.e.beto"></label>
+          <div class="row2">
+            <label for="admN1">Pessoa 1<input id="admN1" maxlength="30" placeholder="Ana"></label>
+            <label for="admN2">Pessoa 2<input id="admN2" maxlength="30" placeholder="Beto"></label>
+          </div>
+          <label for="admPw">Senha inicial (mínimo 6)<input id="admPw" autocomplete="off" autocapitalize="none"></label>
+          <div class="err" id="admErr" role="alert"></div>
+          <div class="actions"><button type="button" class="btn sec" id="admCancel">Cancelar</button><button type="submit" class="btn pri" id="admSave">Criar conta</button></div>
+        </form>
+        <div id="admList"></div>
       </div>
       <div class="card" style="gap:0">
         <div class="set-row">
@@ -482,7 +495,7 @@ input::placeholder{color:var(--faint)}
       </div>
       <div class="card" style="gap:0">
         <div class="set-row"><div class="t"><b>Colocar na tela do iPhone</b><small>No Safari, toque em Compartilhar e depois em "Adicionar à Tela de Início".</small></div></div>
-        <button class="set-row" id="pwBtn"><div class="t"><b>Trocar senha</b><small>Escolha uma senha nova para esta conta</small></div><span class="chev">›</span></button>
+        <button class="set-row" id="pwBtn"><div class="t"><b>Trocar senha</b><small>Vale para os dois, porque a conta é do casal</small></div><span class="chev">›</span></button>
         <form class="inline-form" id="pwForm" hidden style="padding-bottom:12px">
           <label for="pw1">Nova senha<input id="pw1" type="password" autocomplete="new-password"></label>
           <label for="pw2">Repita<input id="pw2" type="password" autocomplete="new-password"></label>
@@ -669,8 +682,9 @@ input::placeholder{color:var(--faint)}
   // ================= Estado =================
   let all = [];            // lançamentos
   let goals = [];          // outras metas
-  let members = [];        // [{user_id,nome}]
-  let me = null;
+  let members = [];        // [{nome}] as duas pessoas do casal
+  let me = null;           // {nome} quem usa este celular
+  let conta = null, uid = null;
   let pct = 20, goal = 15000, limites = {}, cfgCats = null;
   let filtQuem = "", filtCat = "";
   let view = new Date(); view.setDate(1);
@@ -987,7 +1001,7 @@ input::placeholder{color:var(--faint)}
   // ================= Configuração da reserva =================
   async function saveConfig(){
     if(!db) return;
-    const {error} = await db.from("fin_config").update({percentual:pct, meta:goal, limites, categorias: cfgCats || {}}).eq("id",1);
+    const {error} = await db.from("fin_config").update({percentual:pct, meta:goal, limites, categorias: cfgCats || {}}).eq("conta_id", uid);
     if(error) toast("Não deu para salvar. Confira a internet.");
   }
   $("pctEditBtn").onclick = ()=>{ $("pctInput").value = pct; $("pctForm").hidden=false; $("pctEditBtn").hidden=true; $("pctInput").focus(); };
@@ -1115,7 +1129,7 @@ input::placeholder{color:var(--faint)}
     const last = new Date(y, m-1+i+1, 0).getDate();
     return ymd(new Date(y, m-1+i, Math.min(d,last)));
   }
-  const RAW_FIELDS = ["id","tipo","valor","categoria","descricao","data","quem","criado_por","criado_em","grupo","parcela","parcelas"];
+  const RAW_FIELDS = ["id","conta_id","tipo","valor","categoria","descricao","data","quem","criado_por","criado_em","grupo","parcela","parcelas"];
   const raw = x => Object.fromEntries(RAW_FIELDS.filter(k=>x[k]!==undefined).map(k=>[k,x[k]]));
   function upsertLocal(rows){ rows.forEach(r=>{ const n=normRow(r); all = all.filter(x=>x.id!==n.id).concat(n); }); render(); }
 
@@ -1239,7 +1253,7 @@ input::placeholder{color:var(--faint)}
       if(used[i]) return;
       const mm = members.find(m=>fold(m.nome)===w);
       if(mm){ r.quem=mm.nome; used[i]=true; return; }
-      if(["esposa","mulher","marido"].includes(w)){ const e = members.find(m=>me && m.user_id!==me.user_id); if(e){ r.quem=e.nome; used[i]=true; } return; }
+      if(["esposa","mulher","marido"].includes(w)){ const e = members.find(m=>me && m.nome!==me.nome); if(e){ r.quem=e.nome; used[i]=true; } return; }
       if(w==="dois" && (f[i-1]==="os"||f[i-1]==="nos")){ r.quem="Os dois"; used[i]=used[i-1]=true; }
     });
     // categoria: nome exato primeiro, depois palavras parecidas
@@ -1436,7 +1450,7 @@ input::placeholder{color:var(--faint)}
   async function loadAll(){
     const [l, c, g] = await Promise.all([
       db.from("fin_lancamentos").select("*").order("data",{ascending:false}).limit(10000),
-      db.from("fin_config").select("*").eq("id",1).maybeSingle(),
+      db.from("fin_config").select("*").maybeSingle(),
       db.from("fin_metas").select("*")
     ]);
     if(l.error){ setStatus("Não consegui buscar os lançamentos. Confira a internet e abra de novo."); return; }
@@ -1446,30 +1460,110 @@ input::placeholder{color:var(--faint)}
     loaded = true; document.body.classList.remove("loading");
     setStatus(""); render();
   }
-  async function loadMembers(session){
-    const {data, error} = await db.from("fin_membros").select("user_id,nome");
-    if(error || !data || !data.length) return null;
-    members = data;
-    me = data.find(m=>m.user_id===session.user.id) || null;
-    if(me){
-      const ini = me.nome.trim().charAt(0).toUpperCase();
-      $("avatarBtn").textContent = ini; $("meAvatar").textContent = ini;
-      $("meName").textContent = me.nome; $("avatarBtn").setAttribute("aria-label", `Ajustes de ${me.nome}`);
-    }
-    $("meEmail").textContent = session.user.email || "";
+  function whoKey(){ return "fin-quem-"+(conta?conta.usuario:""); }
+  function applyConta(){
+    members = [{nome:conta.nome1},{nome:conta.nome2}];
+    let who = null; try{ who = localStorage.getItem(whoKey()); }catch(e){}
+    if(!members.some(m=>m.nome===who)) who = conta.nome1;
+    me = {nome: who};
+    const ini = who.trim().charAt(0).toUpperCase() || "?";
+    $("avatarBtn").textContent = ini; $("meAvatar").textContent = ini;
+    $("meName").textContent = `${conta.nome1} e ${conta.nome2}`;
+    $("meUser").textContent = `Usuário: ${conta.usuario}`;
+    $("avatarBtn").setAttribute("aria-label", "Ajustes da conta");
+    $("nm1").value = conta.nome1; $("nm2").value = conta.nome2;
+    $("deviceWho").innerHTML = members.map(m=>`<option${m.nome===who?" selected":""}>${esc(m.nome)}</option>`).join("");
+    $("adminCard").hidden = !conta.admin;
     fillQuem();
-    return me;
   }
+  async function loadConta(session){
+    uid = session.user.id;
+    const {data, error} = await db.from("fin_contas").select("usuario,nome1,nome2,admin").maybeSingle();
+    if(error || !data) return null;
+    conta = data; applyConta();
+    if(conta.admin) loadAdmin();
+    return conta;
+  }
+  $("deviceWho").addEventListener("change", e=>{ try{ localStorage.setItem(whoKey(), e.target.value); }catch(_){} applyConta(); });
+  $("namesForm").addEventListener("submit", async e=>{
+    e.preventDefault();
+    const n1=$("nm1").value.trim(), n2=$("nm2").value.trim();
+    if(!n1 || !n2){ toast("Preencha os dois nomes"); return; }
+    const {error} = await db.rpc("fin_salvar_nomes", {p_nome1:n1, p_nome2:n2});
+    if(error){ toast("Não deu para salvar. Confira a internet."); return; }
+    const old = me && me.nome;
+    conta.nome1=n1; conta.nome2=n2;
+    if(old && ![n1,n2].includes(old)){ try{ localStorage.setItem(whoKey(), n1); }catch(_){} }
+    applyConta(); render(); toast("Nomes salvos");
+  });
+
+  // ---------- Administrador: só usuário e nomes, nunca finanças ----------
+  const fmtData = d => d ? new Date(d).toLocaleDateString("pt-BR",{day:"2-digit",month:"short",year:"numeric"}).replace(/\./g,"") : "nunca";
+  async function loadAdmin(){
+    const {data, error} = await db.rpc("fin_admin_listar");
+    if(error){ $("admList").innerHTML = `<p class="empty">Não deu para carregar a lista.</p>`; return; }
+    $("admList").innerHTML = data.map(c=>`<div class="adm-row">
+      <div class="adm-top"><span><b>${esc(c.usuario)}</b>${c.admin?'<span class="tag">você</span>':""}</span><span class="hint">último acesso: ${esc(fmtData(c.ultimo_acesso))}</span></div>
+      <span class="hint">${esc(c.nome1)} e ${esc(c.nome2)} · criada em ${esc(fmtData(c.criado_em))}</span>
+      ${c.admin?"":`<div class="row-actions">
+        <button class="chip-btn" data-admpw="${esc(c.usuario)}">Trocar senha</button>
+        <button class="chip-btn" data-admdel="${esc(c.usuario)}">Excluir conta</button>
+      </div>
+      <form class="inline-form" data-admpwform="${esc(c.usuario)}" hidden>
+        <label>Nova senha<input autocomplete="off" autocapitalize="none" placeholder="mínimo 6"></label>
+        <button class="chip-btn" type="submit">Salvar</button>
+      </form>
+      <div class="inline-form" data-admdelbox="${esc(c.usuario)}" hidden>
+        <span class="danger" style="font-size:13px">Apaga a conta e todos os dados deste casal. Não tem como desfazer.</span>
+        <button class="chip-btn" data-admdelok="${esc(c.usuario)}" style="color:var(--out);border-color:var(--out)">Excluir de vez</button>
+      </div>`}
+    </div>`).join("");
+  }
+  $("admNewBtn").onclick = ()=>{ $("admForm").hidden=false; $("admErr").textContent=""; ["admUser","admN1","admN2","admPw"].forEach(i=>$(i).value=""); $("admUser").focus(); };
+  $("admCancel").onclick = ()=>{ $("admForm").hidden=true; };
+  const ADM_ERR = m => /usuario_invalido/.test(m) ? "Usuário: use de 3 a 30 letras minúsculas, números, ponto, traço ou _ (sem espaço e sem acento)."
+    : /usuario_existe/.test(m) ? "Esse usuário já existe. Escolha outro."
+    : /senha_curta/.test(m) ? "A senha precisa ter pelo menos 6 caracteres."
+    : /sem_permissao/.test(m) ? "Só o administrador pode fazer isso."
+    : "Não deu agora. Confira a internet.";
+  $("admForm").addEventListener("submit", async e=>{
+    e.preventDefault();
+    const u=$("admUser").value.trim().toLowerCase(), pw=$("admPw").value;
+    $("admSave").disabled=true;
+    const {error} = await db.rpc("fin_admin_criar", {p_usuario:u, p_senha:pw, p_nome1:$("admN1").value, p_nome2:$("admN2").value});
+    $("admSave").disabled=false;
+    if(error){ $("admErr").textContent = ADM_ERR(error.message||""); return; }
+    $("admForm").hidden=true; toast(`Conta ${u} criada. Passe o usuário e a senha para o casal.`); loadAdmin();
+  });
+  $("admList").addEventListener("click", async e=>{
+    const pw = e.target.closest("[data-admpw]");
+    if(pw){ const f=document.querySelector(`[data-admpwform="${CSS.escape(pw.dataset.admpw)}"]`); f.hidden=!f.hidden; if(!f.hidden) f.querySelector("input").focus(); return; }
+    const del = e.target.closest("[data-admdel]");
+    if(del){ const b=document.querySelector(`[data-admdelbox="${CSS.escape(del.dataset.admdel)}"]`); b.hidden=!b.hidden; return; }
+    const ok = e.target.closest("[data-admdelok]");
+    if(ok){
+      const {error} = await db.rpc("fin_admin_excluir", {p_usuario: ok.dataset.admdelok});
+      if(error){ toast(ADM_ERR(error.message||"")); return; }
+      toast(`Conta ${ok.dataset.admdelok} excluída`); loadAdmin();
+    }
+  });
+  $("admList").addEventListener("submit", async e=>{
+    const f = e.target.closest("[data-admpwform]"); if(!f) return;
+    e.preventDefault();
+    const {error} = await db.rpc("fin_admin_senha", {p_usuario: f.dataset.admpwform, p_senha: f.querySelector("input").value});
+    if(error){ toast(ADM_ERR(error.message||"")); return; }
+    f.hidden=true; f.querySelector("input").value=""; toast(`Senha de ${f.dataset.admpwform} trocada`);
+  });
   function subscribe(){
     if(channel) return;
     channel = db.channel("financas")
-      .on("postgres_changes",{event:"*",schema:"public",table:"fin_lancamentos"}, p=>{
+      .on("postgres_changes",{event:"*",schema:"public",table:"fin_lancamentos",filter:"conta_id=eq."+uid}, p=>{
         if(p.eventType==="DELETE") all = all.filter(x=>x.id!==p.old.id);
         else { const r = normRow(p.new); all = all.filter(x=>x.id!==r.id).concat(r); }
         render();
       })
-      .on("postgres_changes",{event:"UPDATE",schema:"public",table:"fin_config"}, p=>{ applyConfig(p.new); render(); })
-      .on("postgres_changes",{event:"*",schema:"public",table:"fin_metas"}, p=>{
+      .on("postgres_changes",{event:"UPDATE",schema:"public",table:"fin_config",filter:"conta_id=eq."+uid}, p=>{ applyConfig(p.new); render(); })
+      .on("postgres_changes",{event:"*",schema:"public",table:"fin_metas",filter:"conta_id=eq."+uid}, p=>{
         if(p.eventType==="DELETE") goals = goals.filter(x=>x.id!==p.old.id);
         else goals = goals.filter(x=>x.id!==p.new.id).concat(p.new);
         render();
@@ -1481,11 +1575,11 @@ input::placeholder{color:var(--faint)}
   async function showApp(session){
     $("loginView").hidden = true; $("appView").hidden = false;
     hideSplash();
-    const m = await loadMembers(session);
+    const m = await loadConta(session);
     const h = location.hash.slice(1); go(TITLES[h] ? h : "inicio", false);
     if(!m){
       loaded = true; document.body.classList.remove("loading"); render();
-      setStatus("Sua conta entrou, mas ainda não foi liberada para este site. Peça para o Gean adicionar você na lista de membros.");
+      setStatus("Não encontrei os dados desta conta. Saia e entre de novo, ou fale com quem criou a conta.");
       return;
     }
     await loadAll();
@@ -1493,7 +1587,7 @@ input::placeholder{color:var(--faint)}
   }
   function showLogin(){
     if(channel){ db.removeChannel(channel); channel=null; }
-    all = []; goals = []; me = null; loaded = false; document.body.classList.add("loading");
+    all = []; goals = []; me = null; conta = null; uid = null; loaded = false; $("adminCard").hidden = true; $("admList").innerHTML = ""; document.body.classList.add("loading");
     $("appView").hidden = true; $("loginView").hidden = false;
     hideSplash();
   }
@@ -1510,50 +1604,34 @@ input::placeholder{color:var(--faint)}
 
   db = window.supabase.createClient(CFG.url, CFG.key, { auth: { persistSession: true, autoRefreshToken: true } });
 
-  // Login e senha
-  const showForm = id => ["loginForm","forgotForm","newPassForm","signupForm"].forEach(f=>{ $(f).hidden = f!==id; });
-  // Primeiro acesso: o banco só deixa criar 2 contas no total
-  async function checkVagas(){
-    try{
-      const {data, error} = await db.rpc("fin_vagas");
-      $("firstBox").hidden = !!error || !(data>0);
-      $("suInfo").textContent = data===1
-        ? "Falta só uma conta. Depois dela o cadastro fecha sozinho."
-        : "Só duas contas podem ser criadas: a sua e a da sua esposa. Depois disso o cadastro fecha sozinho.";
-    }catch(e){ $("firstBox").hidden = true; }
+  // Login: cada casal tem um usuário; por dentro ele vira um e-mail interno
+  const toEmail = u => u.includes("@") ? u.trim().toLowerCase() : u.trim().toLowerCase()+"@financas-casa.app";
+  const showForm = id => ["loginForm","setupForm"].forEach(f=>{ $(f).hidden = f!==id; });
+  async function checkSetup(){
+    try{ const {data, error} = await db.rpc("fin_tem_contas"); if(!error && data===false) showForm("setupForm"); }catch(e){}
   }
-  $("signupBtn").onclick = ()=>{ $("suErr").textContent=""; showForm("signupForm"); setTimeout(()=>$("suNome").focus(),50); };
-  $("suBack").onclick = ()=> showForm("loginForm");
-  $("signupForm").addEventListener("submit", async e=>{
-    e.preventDefault();
-    const nome=$("suNome").value.trim(), email=$("suEmail").value.trim(), a=$("suSenha").value, b=$("suSenha2").value;
-    if(!nome){ $("suErr").textContent="Digite seu nome."; return; }
-    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ $("suErr").textContent="Confira o e-mail."; return; }
-    if(a.length<6){ $("suErr").textContent="A senha precisa ter pelo menos 6 caracteres."; return; }
-    if(a!==b){ $("suErr").textContent="As duas senhas estão diferentes."; return; }
-    $("suBtn").disabled = true; $("suErr").textContent="";
-    const {error} = await db.rpc("fin_cadastrar", { p_nome:nome, p_email:email, p_senha:a });
-    if(error){
-      $("suBtn").disabled = false;
-      const m = error.message||"";
-      $("suErr").textContent = /cadastro_fechado/.test(m) ? "As duas contas já foram criadas. Use Entrar."
-        : /email_existe/.test(m) ? "Esse e-mail já tem conta. Use Entrar."
-        : /email_invalido/.test(m) ? "Confira o e-mail."
-        : "Não deu para criar a conta agora. Confira a internet.";
-      return;
-    }
-    const r = await db.auth.signInWithPassword({ email, password: a });
-    $("suBtn").disabled = false;
-    if(r.error){ showForm("loginForm"); $("lEmail").value=email; $("lErr").textContent="Conta criada. Agora entre com seu e-mail e senha."; }
-  });
   $("loginForm").addEventListener("submit", async e=>{
     e.preventDefault();
-    const email = $("lEmail").value.trim(), password = $("lSenha").value;
-    if(!email || !password){ $("lErr").textContent = "Preencha o e-mail e a senha."; return; }
+    const u = $("lUser").value.trim(), password = $("lSenha").value;
+    if(!u || !password){ $("lErr").textContent = "Preencha o usuário e a senha."; return; }
     $("lBtn").disabled = true; $("lErr").textContent = "";
-    const {error} = await db.auth.signInWithPassword({ email, password });
+    const {error} = await db.auth.signInWithPassword({ email: toEmail(u), password });
     $("lBtn").disabled = false;
-    if(error) $("lErr").textContent = /invalid/i.test(error.message) ? "E-mail ou senha errados." : "Não deu para entrar agora. Confira a internet.";
+    if(error) $("lErr").textContent = /invalid/i.test(error.message) ? "Usuário ou senha errados." : "Não deu para entrar agora. Confira a internet.";
+  });
+  $("setupForm").addEventListener("submit", async e=>{
+    e.preventDefault();
+    const u=$("stUser").value.trim().toLowerCase(), a=$("stS1").value, b=$("stS2").value;
+    if(!/^[a-z0-9._-]{3,30}$/.test(u)){ $("stErr").textContent="Usuário: de 3 a 30 letras minúsculas, números, ponto, traço ou _ (sem espaço e sem acento)."; return; }
+    if(!$("stN1").value.trim() || !$("stN2").value.trim()){ $("stErr").textContent="Preencha os dois nomes."; return; }
+    if(a.length<6){ $("stErr").textContent="A senha precisa ter pelo menos 6 caracteres."; return; }
+    if(a!==b){ $("stErr").textContent="As duas senhas estão diferentes."; return; }
+    $("stBtn").disabled = true; $("stErr").textContent="";
+    const {error} = await db.rpc("fin_primeiro_acesso", {p_usuario:u, p_senha:a, p_nome1:$("stN1").value, p_nome2:$("stN2").value});
+    if(error){ $("stBtn").disabled=false; $("stErr").textContent = /ja_configurado/.test(error.message) ? "O app já foi configurado. Use Entrar." : ADM_ERR(error.message||""); if(/ja_configurado/.test(error.message)) showForm("loginForm"); return; }
+    const r = await db.auth.signInWithPassword({ email: toEmail(u), password: a });
+    $("stBtn").disabled = false;
+    if(r.error){ showForm("loginForm"); $("lUser").value=u; $("lErr").textContent="Conta criada. Agora entre com o usuário e a senha."; }
   });
   $("sair").onclick = ()=> db.auth.signOut();
   $("pwBtn").onclick = ()=>{ $("pwForm").hidden = !$("pwForm").hidden; $("pwErr").textContent=""; if(!$("pwForm").hidden) $("pw1").focus(); };
@@ -1564,52 +1642,17 @@ input::placeholder{color:var(--faint)}
     if(a!==b){ $("pwErr").textContent="As duas senhas estão diferentes."; return; }
     const {error} = await db.auth.updateUser({ password:a });
     if(error){ $("pwErr").textContent="Não deu para trocar agora. Saia, entre de novo e tente outra vez."; return; }
-    $("pw1").value=$("pw2").value=""; $("pwForm").hidden=true; toast("Senha trocada");
+    $("pw1").value=$("pw2").value=""; $("pwForm").hidden=true; toast("Senha trocada. Avise a outra pessoa do casal.");
   });
-  $("forgotBtn").onclick = ()=>{ $("fgEmail").value = $("lEmail").value; $("fgErr").textContent=""; $("fgErr").className="err"; showForm("forgotForm"); };
-  $("backLogin").onclick = ()=> showForm("loginForm");
-  $("forgotForm").addEventListener("submit", async e=>{
-    e.preventDefault();
-    const email = $("fgEmail").value.trim();
-    if(!email){ $("fgErr").textContent="Digite seu e-mail."; return; }
-    $("fgBtn").disabled = true;
-    const {error} = await db.auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname });
-    $("fgBtn").disabled = false;
-    if(error && /rate|seconds/i.test(error.message)){ $("fgErr").className="err"; $("fgErr").textContent="Espere um minuto antes de pedir outro link."; return; }
-    $("fgErr").className = "ok-msg";
-    $("fgErr").textContent = "Pronto. Se esse e-mail tiver conta, chegou um link. Abra o link neste celular.";
-  });
-  let recovering = /type=recovery/.test(location.hash);
   let current; // undefined até a primeira resposta do login
-  $("newPassForm").addEventListener("submit", async e=>{
-    e.preventDefault();
-    const a = $("np1").value, b = $("np2").value;
-    if(a.length<6){ $("npErr").textContent="A senha precisa ter pelo menos 6 caracteres."; return; }
-    if(a!==b){ $("npErr").textContent="As duas senhas estão diferentes."; return; }
-    $("npBtn").disabled = true;
-    const {error} = await db.auth.updateUser({ password: a });
-    $("npBtn").disabled = false;
-    if(error){ $("npErr").textContent="Não deu para salvar a senha. Peça um link novo e tente de novo."; return; }
-    recovering = false;
-    history.replaceState(null, "", location.pathname);
-    showForm("loginForm");
-    const {data: s} = await db.auth.getSession();
-    if(s.session){ current = s.session.user.id; showApp(s.session); toast("Senha nova salva"); }
-  });
   db.auth.onAuthStateChange((ev, session)=>{
-    if(ev==="PASSWORD_RECOVERY") recovering = true;
-    if(recovering && session){
-      current = "recovering";
-      setTimeout(()=>{ $("appView").hidden=true; $("loginView").hidden=false; showForm("newPassForm"); hideSplash(); }, 0);
-      return;
-    }
     const id = session ? session.user.id : null;
     if(id === current) return;
     current = id;
-    setTimeout(()=>{ if(session) showApp(session); else { showForm("loginForm"); showLogin(); checkVagas(); } }, 0);
+    setTimeout(()=>{ if(session) showApp(session); else { showForm("loginForm"); showLogin(); checkSetup(); } }, 0);
   });
   setTimeout(hideSplash, 6000); // a abertura nunca fica presa
-  document.addEventListener("visibilitychange", ()=>{ if(!document.hidden && current && current!=="recovering" && loaded) loadAll(); });
+  document.addEventListener("visibilitychange", ()=>{ if(!document.hidden && current && loaded) loadAll(); });
 })();
 </script>
 </body>

@@ -1,15 +1,18 @@
 # Finanças da Casa
 
-Controle financeiro do Gean e da esposa: entradas, saídas por categoria, maiores gastos e reserva com porcentagem segura.
+Controle financeiro para casais: entradas, saídas por categoria, maiores gastos, parcelas, reserva com porcentagem segura e outras metas.
 
-## Como colocar no ar
+- Site: https://geanliberato4-commits.github.io/financas-casa/
+- Banco: Supabase, projeto `financas-casa` (São Paulo).
 
-1. **Supabase**: abra o projeto e vá em **SQL Editor**. Cole o conteúdo de `supabase.sql` e clique em **Run**.
-2. **Bloquear cadastros**: vá em **Authentication > Sign In / Providers** e desligue a opção **Allow new users to sign up**. Assim ninguém mais cria conta.
-3. **Criar as contas**: vá em **Authentication > Users > Add user > Create new user**. Crie uma conta para você e outra para sua esposa, com e-mail e senha, e marque **Auto Confirm User**.
-4. **Liberar as contas**: no **SQL Editor**, rode as duas linhas do fim do `supabase.sql`, trocando pelos e-mails que você usou.
-5. **Chaves**: vá em **Project Settings > API**. Copie a **Project URL** e a chave **anon public** (ou **publishable**) e cole no arquivo `config.js`.
-6. **Site**: o site é publicado pelo GitHub Pages (Settings > Pages > Branch `main`).
-7. **Link de "Esqueci minha senha"**: no Supabase, vá em **Authentication > URL Configuration**. Em **Site URL**, coloque o endereço do site (ex.: `https://geanliberato4-commits.github.io/financas-casa/`) e adicione o mesmo endereço em **Redirect URLs**.
+## Como funciona o acesso
 
-Os dados só aparecem para quem entrar com uma das duas contas. A chave do `config.js` pode ficar pública: sem login, ela não mostra nada.
+- Cada casal tem **um usuário e uma senha**, que os dois usam.
+- A primeira conta criada no app é a do **administrador**. Só ela vê a área "Casais do app" em Ajustes, onde dá para criar contas para outros casais, trocar senhas esquecidas e excluir contas.
+- O administrador vê só o usuário, os nomes e as datas de cada conta. As finanças de cada casal ficam protegidas no próprio banco (Row Level Security): cada conta só lê e grava o que é dela.
+
+## Arquivos
+
+- `index.html`: o app inteiro (telas, estilo e lógica).
+- `config.js`: endereço e chave pública do Supabase. A chave pode ser pública: sem login, ela não mostra nada.
+- `manifest.json` e ícones: para instalar na tela do celular.
