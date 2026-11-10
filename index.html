@@ -201,6 +201,25 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .switch input:checked+span::after{transform:translateX(18px)}
 .switch input:focus-visible+span{outline:2px solid var(--in);outline-offset:2px}
 .danger{color:var(--out);font-weight:600}
+/* Quanto ainda dá para gastar */
+.spend-val{font-family:var(--display);font-size:32px;font-weight:800;letter-spacing:-.02em;line-height:1.1}
+.spend-val.ok{background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.spend-val.bad{color:var(--out)}
+.spend-day{font-size:14px;color:var(--ink)}
+.spend-day b{color:var(--gold)}
+.spend .bar i{background:var(--gold-grad)} .spend .bar i.warn{background:var(--out)}
+.spend-calc{font-size:12px;color:var(--muted)}
+/* Desafio */
+.chal-top{display:flex;align-items:center;gap:12px}
+.chal-top .ico{background:var(--gold-soft);color:var(--gold)}
+.chal-top .t{flex:1;min-width:0}
+.chal-top b{display:block;font-family:var(--display);font-size:17px}
+.chal-top small{color:var(--muted);font-size:13px}
+.chal-status{font-size:13px;font-weight:600;padding:8px 11px;border-radius:12px}
+.chal-status.ok{background:var(--in-soft);color:var(--in)} .chal-status.warn{background:var(--gold-soft);color:var(--gold)} .chal-status.bad{background:var(--out-soft);color:var(--out)}
+.chal .bar i.ok{background:var(--in)} .chal .bar i.warn{background:var(--gold)} .chal .bar i.bad{background:var(--out)}
+.chal-prev{font-size:13px;padding:9px 11px;border-radius:12px;background:rgba(255,255,255,.035);border:1px solid var(--line)}
+.chal-form{display:flex;flex-direction:column;gap:10px}
 /* Manual */
 .card.help-hero{flex-direction:row;gap:14px;align-items:center}
 .help-hero img{width:54px;height:54px;border-radius:14px;flex:none}
@@ -380,8 +399,30 @@ input::placeholder{color:var(--faint)}
         <div class="people num" id="people" hidden></div>
       </div>
 
+      <div class="card spend" id="spendCard" hidden>
+        <div class="card-head"><span class="sub">Ainda dá para gastar este mês</span><span class="hint num" id="spendDays"></span></div>
+        <div class="spend-val num" id="spendVal">R$ 0,00</div>
+        <div class="spend-day num" id="spendDay"></div>
+        <div class="bar"><i id="spendBar" style="width:0%"></i></div>
+        <div class="spend-calc num" id="spendCalc"></div>
+      </div>
+
+      <div class="card chal" id="chalCard" hidden>
+        <div class="card-head"><span class="sub" id="chalTitle">Desafio do mês</span><span class="hint num" id="chalHint"></span></div>
+        <div id="chalPrev" class="chal-prev" hidden></div>
+        <div id="chalBody"></div>
+        <form class="chal-form" id="chalForm" hidden novalidate>
+          <div class="row2">
+            <label for="chalCat">Categoria<select id="chalCat"></select></label>
+            <label for="chalMeta">Gastar no máximo (R$)<input id="chalMeta" inputmode="decimal" placeholder="350"></label>
+          </div>
+          <div class="hint num" id="chalBase"></div>
+          <div class="actions"><button type="button" class="btn sec" id="chalCancel">Cancelar</button><button type="submit" class="btn pri">Começar desafio</button></div>
+        </form>
+      </div>
+
       <div class="card">
-        <div class="card-head"><h2>Lançamento rápido</h2><span class="hint">escreva e toque em Lançar</span></div>
+        <div class="card-head"><h2>Lançamento rápido</h2><span class="hint">ex.: mercado 230</span></div>
         <form class="quick-in" id="quickForm" autocomplete="off">
           <input id="quickInput" placeholder="mercado 230 · uber 25 ontem" aria-label="Lançamento rápido" enterkeyhint="done">
           <button type="submit" id="quickBtn" disabled>Lançar</button>
@@ -600,6 +641,17 @@ input::placeholder{color:var(--faint)}
  <p>A barra fica <b>verde</b> enquanto está tudo certo, <b>amarela</b> quando passa de 80% e <b>vermelha</b> quando estoura. Ali também dá para criar categorias suas, como Pet ou Igreja.</p></div>
         </details>
         <details>
+          <summary><span class="ico"><span class="ico" data-icon="wallet"></span></span><span class="t">Quanto ainda dá para gastar</span></summary>
+          <div class="body"><p>No Início, logo abaixo do saldo, o app mostra quanto vocês ainda podem gastar até o fim do mês sem atrapalhar o que querem guardar.</p>
+ <p>A conta é: <b>o que entrou</b> menos <b>o que já foi gasto</b> menos <b>a meta de guardar</b> do mês. O resultado é dividido pelos dias que faltam, para dar um valor por dia.</p>
+ <p>Dica: lance as contas fixas do mês (aluguel, luz, internet) assim que souber o valor. Assim esse número fica certo desde o começo do mês.</p></div>
+        </details>
+        <details>
+          <summary><span class="ico"><span class="ico" data-icon="target"></span></span><span class="t">Desafio do mês</span></summary>
+          <div class="body"><p>Todo mês o app sugere <b>uma</b> categoria para vocês segurarem, normalmente a que mais pesou e não é conta essencial. A meta é gastar 20% menos do que a média dos últimos meses.</p>
+ <p>Toque em <b>Aceitar desafio</b>, ou em <b>Escolher outro</b> para definir a categoria e o valor vocês mesmos. A barra mostra como estão indo, e no mês seguinte aparece o resultado.</p></div>
+        </details>
+        <details>
           <summary><span class="ico"><span class="ico" data-icon="eye"></span></span><span class="t">Privacidade</span></summary>
           <div class="body"><ul>
    <li>Só quem tem o usuário e a senha de vocês vê as finanças de vocês.</li>
@@ -798,7 +850,7 @@ input::placeholder{color:var(--faint)}
   let members = [];        // [{nome}] as duas pessoas do casal
   let me = null;           // {nome} quem usa este celular
   let conta = null, uid = null;
-  let pct = 20, goal = 15000, limites = {}, cfgCats = null;
+  let pct = 20, goal = 15000, limites = {}, cfgCats = null, desafio = null;
   let filtQuem = "", filtCat = "";
   let view = new Date(); view.setDate(1);
   let db = null, loaded = false;
@@ -899,6 +951,8 @@ input::placeholder{color:var(--faint)}
     renderChart();
     renderParcelas();
     renderGoals();
+    renderSpend();
+    renderChallenge();
   }
 
   function renderReserva(ent, resMes, resTotal){
@@ -1101,6 +1155,140 @@ input::placeholder{color:var(--faint)}
     }).join("");
   }
 
+  // ================= Quanto ainda dá para gastar =================
+  function renderSpend(){
+    const now = new Date(), k = monthKey(now);
+    const isCur = monthKey(view) === k;
+    $("spendCard").hidden = !isCur || !loaded;
+    if(!isCur || !loaded) return;
+    const it = inMonth(k);
+    const ent = sumOf(it,"entrada"), sai = sumOf(it,"saida"), res = sumOf(it,"reserva");
+    const guardar = Math.max(Math.round(ent*pct)/100, res);
+    const lastDay = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
+    const dias = lastDay - now.getDate() + 1;
+    $("spendDays").textContent = `${dias} ${dias===1?"dia":"dias"} até ${lastDay}/${pad(now.getMonth()+1)}`;
+    if(ent<=0){
+      $("spendVal").className = "spend-val num"; $("spendVal").textContent = "—";
+      $("spendDay").textContent = "Lancem os ganhos deste mês para ver quanto ainda podem gastar.";
+      $("spendBar").style.width = "0%"; $("spendCalc").textContent = "";
+      return;
+    }
+    const disp = ent - sai - guardar;
+    const orc = Math.max(0, ent - guardar);
+    $("spendVal").className = "spend-val num " + (disp>=0 ? "ok" : "bad");
+    $("spendVal").textContent = disp>=0 ? money(disp) : "− " + money(-disp);
+    $("spendDay").innerHTML = disp>=0
+      ? `Cerca de <b>${money(disp/dias)}</b> por dia até o fim do mês.`
+      : `Os gastos já passaram ${money(-disp)} do planejado. Vale segurar o que não for essencial até o mês virar.`;
+    const usado = orc>0 ? Math.min(100, sai/orc*100) : 100;
+    $("spendBar").style.width = usado + "%";
+    $("spendBar").className = usado>=90 ? "warn" : "";
+    $("spendCalc").textContent = `Entrou ${money(ent)} − gastos ${money(sai)} − guardar ${money(guardar)} (${pct}%)`;
+  }
+
+  // ================= Desafio do mês =================
+  const ESSENCIAIS = new Set(["moradia","contas","saude","educacao","filhos","reserva"]);
+  // Média de uma categoria nos últimos 3 meses fechados que têm lançamentos
+  function baseCat(c, refK){
+    const [y,m] = refK.split("-").map(Number);
+    const ks = [1,2,3].map(i=>monthKey(new Date(y, m-1-i, 1))).filter(k=>all.some(x=>x.data.startsWith(k)));
+    if(!ks.length) return {media:0, n:0};
+    const tot = ks.reduce((a,k)=>a+all.filter(x=>x.tipo==="saida" && x.categoria===c && x.data.startsWith(k)).reduce((s,x)=>s+x.valor,0),0);
+    return {media: tot/ks.length, n: ks.length};
+  }
+  function suggestChallenge(k){
+    const cats = [...new Set(all.filter(x=>x.tipo==="saida").map(x=>x.categoria).filter(Boolean))];
+    let best = null;
+    cats.forEach(c=>{
+      const b = baseCat(c, k);
+      if(b.media < 100) return;
+      const score = b.media * (ESSENCIAIS.has(fold(c)) ? 0.35 : (fold(c)==="mercado" ? 0.6 : 1));
+      if(!best || score > best.score) best = {categoria:c, base:b.media, score};
+    });
+    if(!best) return null;
+    const meta = Math.max(10, Math.floor(best.base*0.8/10)*10);
+    return {mes:k, categoria:best.categoria, meta, base:Math.round(best.base*100)/100};
+  }
+  const gastoCat = (c,k) => all.filter(x=>x.tipo==="saida" && x.categoria===c && x.data.startsWith(k)).reduce((a,x)=>a+x.valor,0);
+  function renderChallenge(){
+    const now = new Date(), k = monthKey(now);
+    const isCur = monthKey(view) === k;
+    $("chalCard").hidden = !isCur || !loaded;
+    if(!isCur || !loaded || !$("chalForm").hidden) return;
+    // Resultado do desafio do mês passado
+    const prevK = monthKey(new Date(now.getFullYear(), now.getMonth()-1, 1));
+    if(desafio && desafio.mes===prevK){
+      const g = gastoCat(desafio.categoria, prevK), ok = g <= desafio.meta;
+      const econ = Math.max(0, (desafio.base||0) - g);
+      const nm = monthName(new Date(now.getFullYear(), now.getMonth()-1, 1),{month:"long"});
+      $("chalPrev").hidden = false;
+      $("chalPrev").innerHTML = ok
+        ? `<b style="color:var(--in)">Desafio de ${esc(nm)} cumprido!</b> ${esc(desafio.categoria)}: ${money(g)} de ${money(desafio.meta)}.${econ>0?` Economizaram ${money(econ)} em relação à média.`:""}`
+        : `<b style="color:var(--out)">Desafio de ${esc(nm)} não deu.</b> ${esc(desafio.categoria)} ficou em ${money(g)}, a meta era ${money(desafio.meta)}. Vale tentar de novo.`;
+    } else $("chalPrev").hidden = true;
+
+    if(desafio && desafio.mes===k){
+      const g = gastoCat(desafio.categoria, k), r = desafio.meta>0 ? g/desafio.meta : 1;
+      const lastDay = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate(), dias = lastDay - now.getDate() + 1;
+      const cls = r>1 ? "bad" : (r > now.getDate()/lastDay + 0.15 || r>=0.85) ? "warn" : "ok";
+      const status = r>1 ? `Passou ${money(g-desafio.meta)} da meta. Ainda dá para segurar o resto do mês.`
+        : cls==="warn" ? `Atenção: já usaram ${Math.round(r*100)}% e faltam ${dias} ${dias===1?"dia":"dias"}. Restam ${money(desafio.meta-g)}.`
+        : `No caminho certo. Restam ${money(desafio.meta-g)} para ${dias} ${dias===1?"dia":"dias"}.`;
+      $("chalTitle").textContent = "Desafio do mês";
+      $("chalHint").textContent = desafio.base ? `média: ${money(desafio.base)}` : "";
+      $("chalBody").innerHTML = `<div class="chal-top"><div class="ico">${catIcon(desafio.categoria)}</div>
+          <div class="t"><b>${esc(desafio.categoria)} até ${money(desafio.meta)}</b><small class="num">gasto até agora: ${money(g)}</small></div></div>
+        <div class="bar" style="margin-top:10px"><i class="${cls}" style="width:${Math.min(100,r*100)}%"></i></div>
+        <div class="chal-status ${cls}" style="margin-top:10px">${status}</div>
+        <div class="row-actions" style="margin-top:10px"><button class="chip-btn" id="chalChange">Mudar desafio</button></div>`;
+      return;
+    }
+    // Sem desafio neste mês: sugerir
+    const sug = suggestChallenge(k);
+    $("chalTitle").textContent = "Desafio do mês";
+    $("chalHint").textContent = "";
+    if(!sug){
+      $("chalBody").innerHTML = `<p class="empty">Depois do primeiro mês com gastos lançados, o app sugere aqui uma categoria para vocês economizarem.</p>
+        <div class="row-actions" style="margin-top:8px"><button class="chip-btn" id="chalOther">Criar um desafio</button></div>`;
+      return;
+    }
+    const econ = sug.base - sug.meta;
+    $("chalBody").innerHTML = `<div class="chal-top"><div class="ico">${catIcon(sug.categoria)}</div>
+        <div class="t"><b>${esc(sug.categoria)} até ${money(sug.meta)}</b><small class="num">a média dos últimos meses foi ${money(sug.base)}</small></div></div>
+      <p class="sug-line" style="margin-top:10px">Se conseguirem, sobram cerca de <b>${money(econ)}</b> a mais este mês${econ>0?`, ou ${money(econ*12)} em um ano`:""}.</p>
+      <div class="row-actions" style="margin-top:10px"><button class="chip-btn" id="chalAccept" style="background:var(--gold-grad);color:var(--on-accent);border-color:transparent">Aceitar desafio</button><button class="chip-btn" id="chalOther">Escolher outro</button></div>`;
+    $("chalBody").dataset.sug = JSON.stringify(sug);
+  }
+  function openChalForm(){
+    const k = monthKey(new Date());
+    const cats = catsFor("saida");
+    const cur = desafio && desafio.mes===k ? desafio.categoria : (JSON.parse($("chalBody").dataset.sug||"null")||{}).categoria;
+    $("chalCat").innerHTML = cats.map(c=>`<option${c===cur?" selected":""}>${esc(c)}</option>`).join("");
+    const upd = ()=>{ const b = baseCat($("chalCat").value, k); $("chalBase").textContent = b.n ? `Média dos últimos meses: ${brl.format(b.media)}. Sugestão: ${brl.format(Math.max(10,Math.floor(b.media*0.8/10)*10))}.` : "Ainda sem histórico dessa categoria."; };
+    $("chalCat").onchange = ()=>{ upd(); $("chalMeta").value=""; };
+    upd();
+    $("chalMeta").value = desafio && desafio.mes===k ? String(desafio.meta).replace(".",",") : "";
+    $("chalBody").hidden = true; $("chalForm").hidden = false;
+  }
+  $("chalCard").addEventListener("click", async e=>{
+    if(e.target.id==="chalAccept"){
+      const sug = JSON.parse($("chalBody").dataset.sug||"null"); if(!sug) return;
+      const old = desafio; desafio = sug; render(); await saveConfig();
+      toast(`Desafio aceito: ${sug.categoria} até ${brl.format(sug.meta)}`, async()=>{ desafio=old; render(); await saveConfig(); });
+    }
+    if(e.target.id==="chalOther" || e.target.id==="chalChange") openChalForm();
+  });
+  $("chalCancel").onclick = ()=>{ $("chalForm").hidden = true; $("chalBody").hidden = false; render(); };
+  $("chalForm").addEventListener("submit", async e=>{
+    e.preventDefault();
+    const k = monthKey(new Date()), c = $("chalCat").value, v = parseValor($("chalMeta").value);
+    if(!(v>0)){ $("chalMeta").focus(); return; }
+    const old = desafio;
+    desafio = {mes:k, categoria:c, meta:v, base: Math.round(baseCat(c,k).media*100)/100};
+    $("chalForm").hidden = true; $("chalBody").hidden = false; render(); await saveConfig();
+    toast(`Desafio: ${c} até ${brl.format(v)}`, async()=>{ desafio=old; render(); await saveConfig(); });
+  });
+
   // ================= Navegação e filtros =================
   $("prevM").onclick = ()=>{ view.setMonth(view.getMonth()-1); render(); };
   $("nextM").onclick = ()=>{ view.setMonth(view.getMonth()+1); render(); };
@@ -1114,7 +1302,7 @@ input::placeholder{color:var(--faint)}
   // ================= Configuração da reserva =================
   async function saveConfig(){
     if(!db) return;
-    const {error} = await db.from("fin_config").update({percentual:pct, meta:goal, limites, categorias: cfgCats || {}}).eq("conta_id", uid);
+    const {error} = await db.from("fin_config").update({percentual:pct, meta:goal, limites, categorias: cfgCats || {}, desafio}).eq("conta_id", uid);
     if(error) toast("Não deu para salvar. Confira a internet.");
   }
   $("pctEditBtn").onclick = ()=>{ $("pctInput").value = pct; $("pctForm").hidden=false; $("pctEditBtn").hidden=true; $("pctInput").focus(); };
@@ -1553,6 +1741,7 @@ input::placeholder{color:var(--faint)}
     pct = Number(d.percentual); goal = Number(d.meta)||goal;
     limites = (d.limites && typeof d.limites==="object") ? d.limites : {};
     cfgCats = (d.categorias && (d.categorias.saida||d.categorias.entrada)) ? d.categorias : null;
+    desafio = (d.desafio && d.desafio.mes && d.desafio.categoria) ? d.desafio : null;
   }
   function normRow(x){ return { ...x, valor: Number(x.valor)||0, data: String(x.data||""), criado: Date.parse(x.criado_em)||0 }; }
 
