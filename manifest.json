@@ -1,2 +1,2 @@
-{"name":"Finanças da Casa","short_name":"Finanças","start_url":"./","display":"standalone","background_color":"#F2F4F1","theme_color":"#1E3A2F","lang":"pt-BR",
- "icons":[{"src":"icon-180.png","sizes":"180x180","type":"image/png"},{"src":"icon-512.png","sizes":"512x512","type":"image/png"}]}
+{"name":"Finanças da Casa","short_name":"Finanças","start_url":"./","display":"standalone","background_color":"#000000","theme_color":"#1E3A2F","lang":"pt-BR",
+ "icons":[{"src":"icon-180.png","sizes":"180x180","type":"image/png"},{"src":"icon-192.png","sizes":"192x192","type":"image/png"},{"src":"icon-512.png","sizes":"512x512","type":"image/png","purpose":"any"}]}

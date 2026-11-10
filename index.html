@@ -11,7 +11,8 @@
 <meta name="theme-color" content="#F2F4F1" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0F1512" media="(prefers-color-scheme: dark)">
 <link rel="apple-touch-icon" href="icon-180.png">
-<link rel="icon" href="icon-180.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&display=swap">
@@ -64,7 +65,9 @@ svg.i{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .splash{position:fixed;inset:0;z-index:100;background:var(--bg);display:grid;place-items:center;transition:opacity .35s}
 .splash.out{opacity:0;pointer-events:none}
 .splash-mark{display:flex;flex-direction:column;align-items:center;gap:14px}
-.logo{width:64px;height:64px;border-radius:18px;background:var(--accent);display:grid;place-items:center;color:var(--gold);font-family:var(--display);font-weight:700;font-size:22px}
+.logo{width:72px;height:72px;border-radius:18px;display:block;object-fit:cover;box-shadow:0 6px 18px rgba(0,0,0,.18)}
+.brand-mark{width:30px;height:30px;border-radius:8px;flex:none}
+.splash .logo{width:96px;height:96px;border-radius:24px}
 .splash-mark b{font-family:var(--display);font-size:18px}
 
 /* ---------- Barra superior ---------- */
@@ -297,13 +300,13 @@ input,select{font:inherit;font-size:16px;color:var(--ink);background:var(--bg);b
 <body class="loading">
 
 <div class="splash" id="splash" aria-hidden="true">
-  <div class="splash-mark"><div class="logo">R$</div><b>Finanças da Casa</b></div>
+  <div class="splash-mark"><img class="logo" src="logo.png" alt=""><b>Finanças da Casa</b></div>
 </div>
 
 <!-- ============ LOGIN ============ -->
 <div class="login" id="loginView" hidden>
   <form id="loginForm" novalidate>
-    <div class="logo" aria-hidden="true">R$</div>
+    <img class="logo" src="logo.png" alt="" aria-hidden="true">
     <h1>Finanças da Casa</h1>
     <p>Entre com o e-mail e a senha de vocês.</p>
     <label for="lEmail">E-mail<input id="lEmail" type="email" autocomplete="username" required></label>
@@ -317,7 +320,7 @@ input,select{font:inherit;font-size:16px;color:var(--ink);background:var(--bg);b
     </div>
   </form>
   <form id="signupForm" hidden novalidate>
-    <div class="logo" aria-hidden="true">R$</div>
+    <img class="logo" src="logo.png" alt="" aria-hidden="true">
     <h1>Criar conta</h1>
     <p id="suInfo">Só duas contas podem ser criadas: a sua e a da sua esposa. Depois disso o cadastro fecha sozinho.</p>
     <label for="suNome">Seu nome<input id="suNome" maxlength="30" autocomplete="given-name" placeholder="Ex.: Gean"></label>
@@ -329,7 +332,7 @@ input,select{font:inherit;font-size:16px;color:var(--ink);background:var(--bg);b
     <button class="link-btn" type="button" id="suBack">Já tenho conta</button>
   </form>
   <form id="forgotForm" hidden novalidate>
-    <div class="logo" aria-hidden="true">R$</div>
+    <img class="logo" src="logo.png" alt="" aria-hidden="true">
     <h1>Recuperar senha</h1>
     <p>Digite seu e-mail. Vamos mandar um link para você criar uma senha nova.</p>
     <label for="fgEmail">E-mail<input id="fgEmail" type="email" autocomplete="username"></label>
@@ -338,7 +341,7 @@ input,select{font:inherit;font-size:16px;color:var(--ink);background:var(--bg);b
     <button class="link-btn" type="button" id="backLogin">Voltar para entrar</button>
   </form>
   <form id="newPassForm" hidden novalidate>
-    <div class="logo" aria-hidden="true">R$</div>
+    <img class="logo" src="logo.png" alt="" aria-hidden="true">
     <h1>Criar senha nova</h1>
     <p>Escolha uma senha com pelo menos 6 caracteres.</p>
     <label for="np1">Nova senha<input id="np1" type="password" autocomplete="new-password"></label>
@@ -352,6 +355,7 @@ input,select{font:inherit;font-size:16px;color:var(--ink);background:var(--bg);b
 <div id="appView" hidden>
   <header class="appbar">
     <div class="appbar-in">
+      <img class="brand-mark" src="favicon-32.png" srcset="icon-180.png 2x" alt="" aria-hidden="true">
       <h1 id="tabTitle">Início</h1>
       <div class="month" id="monthBox" role="group" aria-label="Mês">
         <button id="prevM" aria-label="Mês anterior">‹</button>
