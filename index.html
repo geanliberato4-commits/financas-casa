@@ -354,6 +354,7 @@ input::placeholder{color:var(--faint)}
     <div class="err" id="lErr" role="alert"></div>
     <button class="btn pri" type="submit" id="lBtn">Entrar</button>
     <p class="hint" style="text-align:center">Esqueceu a senha? Peça para quem criou a sua conta trocar.</p>
+    <p class="hint" style="text-align:center;font-size:12px">Ao entrar, você concorda com os <a href="termos.html" style="color:var(--gold)">Termos de uso e a Política de privacidade</a>.</p>
   </form>
   <form id="setupForm" hidden novalidate>
     <img class="logo" src="logo.png" alt="" aria-hidden="true">
@@ -580,6 +581,7 @@ input::placeholder{color:var(--faint)}
           <button class="chip-btn" type="submit">Salvar</button>
           <div class="err" id="pwErr" role="alert" style="width:100%"></div>
         </form>
+        <a class="set-row" href="termos.html" style="color:inherit;text-decoration:none"><div class="t"><b>Termos de uso e privacidade</b><small>Planos, cancelamento e como cuidamos dos seus dados</small></div><span class="chev">›</span></a>
         <button class="set-row" id="sair"><div class="t"><span class="danger">Sair da conta</span></div></button>
       </div>
     </section>
@@ -682,7 +684,7 @@ input::placeholder{color:var(--faint)}
  <p>Você vê só o usuário, os nomes e o último acesso. As finanças de cada conta ficam fechadas só para os donos dela.</p></div>
         </details>
       </div>
-      <p class="help-foot">Dúvida que não está aqui? Fale com quem criou a sua conta.</p>
+      <p class="help-foot">Dúvida que não está aqui? Fale com quem criou a sua conta. · <a href="termos.html" style="color:var(--gold)">Termos de uso e privacidade</a></p>
     </section>
 
     <p class="status" id="status" hidden></p>

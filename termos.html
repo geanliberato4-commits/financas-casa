@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Termos de Uso e Privacidade · Finanças da Casa</title>
+<meta name="theme-color" content="#050E22">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#050E22; --surface:#0B1A38; --line:#1A2F5E; --line-gold:rgba(245,190,40,.32);
+  --ink:#F4F7FC; --muted:#97A6C6; --gold:#F5BE28;
+  --gold-grad:linear-gradient(135deg,#FFE58A 0%,#F5BE28 48%,#C98A0B 100%);
+  --display:"Manrope","Segoe UI",system-ui,sans-serif; --body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{background:var(--bg)}
+body{margin:0;color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.65;
+  background:radial-gradient(900px 520px at 85% -8%,rgba(47,123,255,.16),transparent 60%),var(--bg);
+  padding:calc(24px + env(safe-area-inset-top,0px)) max(18px, env(safe-area-inset-right,0px)) calc(60px + env(safe-area-inset-bottom,0px)) max(18px, env(safe-area-inset-left,0px))}
+main{max-width:720px;margin:0 auto}
+header{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+header img{width:56px;height:56px;border-radius:14px}
+header a{margin-left:auto;color:var(--gold);font-weight:600;text-decoration:none;font-size:14px;border:1px solid var(--line-gold);border-radius:999px;padding:7px 14px;white-space:nowrap}
+h1{font-family:var(--display);font-size:28px;line-height:1.2;margin:0}
+h2{font-family:var(--display);font-size:19px;margin:34px 0 8px;color:var(--gold)}
+h3{font-family:var(--display);font-size:16px;margin:20px 0 4px}
+p,li{color:#D3DCEE}
+ul,ol{padding-left:22px}
+li{margin:4px 0}
+b,strong{color:var(--ink)}
+.meta{color:var(--muted);font-size:14px;margin:4px 0 0}
+.toc{background:linear-gradient(180deg,#0E2046,#0A1938);border:1px solid var(--line);border-radius:18px;padding:16px 20px;margin:22px 0}
+.toc a{color:var(--ink);text-decoration:none}
+.toc ol{margin:0}
+.plans{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+.plan{background:linear-gradient(180deg,#0E2046,#0A1938);border:1px solid var(--line);border-radius:18px;padding:16px}
+.plan b{font-family:var(--display);font-size:17px}
+.price{font-family:var(--display);font-size:28px;font-weight:800;background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;color:transparent;margin:6px 0 2px}
+.plan small{color:var(--muted);display:block}
+.promo{border:1px solid var(--line-gold);background:rgba(245,190,40,.07);border-radius:18px;padding:16px 18px;margin:14px 0}
+.promo h3{margin-top:0;color:var(--gold)}
+.note{font-size:14px;color:var(--muted);border-top:1px solid var(--line);padding-top:18px;margin-top:40px}
+a{color:var(--gold)}
+@media (max-width:480px){ .plans{grid-template-columns:1fr} h1{font-size:24px} }
+</style>
+</head>
+<body>
+<main>
+<header>
+  <img src="icon-180.png" alt="">
+  <div><h1>Termos de Uso e Política de Privacidade</h1><p class="meta">Finanças da Casa · versão de 12 de novembro de 2026</p></div>
+</header>
+<p><a href="./" style="font-weight:600">‹ Voltar para o app</a></p>
+
+<p>Estes termos explicam, em linguagem simples, as regras para usar o <b>Finanças da Casa</b> e como cuidamos dos seus dados. Ao criar ou usar uma conta, você concorda com eles. Se não concordar, não use o app.</p>
+
+<nav class="toc" aria-label="Sumário">
+  <ol>
+    <li><a href="#quem">Quem oferece o app</a></li>
+    <li><a href="#servico">O que é o serviço</a></li>
+    <li><a href="#conta">Sua conta e senha</a></li>
+    <li><a href="#planos">Planos, preços e pagamento</a></li>
+    <li><a href="#cancelar">Cancelamento e arrependimento</a></li>
+    <li><a href="#dados">Quais dados guardamos</a></li>
+    <li><a href="#uso">Para que usamos os dados</a></li>
+    <li><a href="#acesso">Quem pode ver os seus dados</a></li>
+    <li><a href="#seguranca">Segurança e onde os dados ficam</a></li>
+    <li><a href="#direitos">Seus direitos (LGPD)</a></li>
+    <li><a href="#exclusao">Por quanto tempo guardamos e exclusão</a></li>
+    <li><a href="#responsabilidade">Limites de responsabilidade</a></li>
+    <li><a href="#mudancas">Mudanças nestes termos</a></li>
+    <li><a href="#contato">Contato</a></li>
+  </ol>
+</nav>
+
+<h2 id="quem">1. Quem oferece o app</h2>
+<p>O Finanças da Casa é oferecido por <b>Gean Liberato</b>, chamado aqui de "responsável". Ele administra o app e é o controlador dos dados pessoais, nos termos da Lei Geral de Proteção de Dados (Lei nº 13.709/2018, a LGPD).</p>
+
+<h2 id="servico">2. O que é o serviço</h2>
+<p>É um app de organização financeira pessoal e de casal. Nele você registra ganhos, gastos, parcelas, reserva e metas, e o app faz contas e mostra resumos com base no que <b>você mesmo lança</b>.</p>
+<ul>
+  <li>O app <b>não se conecta ao seu banco</b>, não movimenta dinheiro e não pede senha de banco ou dados de cartão.</li>
+  <li>As sugestões do app, como a "porcentagem segura" e o "desafio do mês", são <b>cálculos automáticos</b> feitos com os seus lançamentos. Elas <b>não são consultoria financeira</b>, de investimentos ou contábil.</li>
+  <li>O app funciona pelo navegador e pode ser colocado na tela inicial do celular.</li>
+</ul>
+
+<h2 id="conta">3. Sua conta e senha</h2>
+<ul>
+  <li>As contas são criadas pelo responsável. Cada conta tem <b>um usuário e uma senha</b>.</li>
+  <li>A conta pode ser <b>Individual</b>, de uma pessoa, ou de <b>Casal</b>, em que as duas pessoas usam o mesmo login e veem os mesmos dados.</li>
+  <li>Você é responsável por guardar a sua senha e por quem você deixa usar a sua conta. Numa conta de casal, os dois concordam em compartilhar as informações lançadas.</li>
+  <li>Para usar o app é preciso ter <b>18 anos ou mais</b>.</li>
+  <li>Não é permitido tentar acessar contas de outras pessoas, atacar o sistema ou usar o app para fins ilegais. Nesses casos, a conta pode ser suspensa.</li>
+</ul>
+
+<h2 id="planos">4. Planos, preços e pagamento</h2>
+<div class="plans">
+  <div class="plan"><b>Individual</b><div class="price">R$ 14,90</div><small>por mês · 1 pessoa</small></div>
+  <div class="plan"><b>Casal</b><div class="price">R$ 24,90</div><small>por mês · 2 pessoas, um só login</small></div>
+</div>
+<p>Também há o <b>plano anual</b>, pago de uma vez: <b>R$ 149,00</b> no Individual e <b>R$ 249,00</b> no Casal. É como pagar 10 meses e usar 12.</p>
+
+<div class="promo">
+  <h3>Oferta de lançamento</h3>
+  <ul>
+    <li><b>1º mês grátis</b> para as primeiras 20 contas criadas.</li>
+    <li><b>Preço de fundador</b> para as primeiras 50 contas: <b>R$ 9,90 por mês</b> no Individual e <b>R$ 17,90 por mês</b> no Casal, mantido enquanto a assinatura continuar ativa, sem interrupção.</li>
+    <li>Válida para contas criadas até <b>31 de dezembro de 2026</b> ou até acabarem as vagas, o que acontecer primeiro.</li>
+  </ul>
+</div>
+
+<ul>
+  <li>O pagamento é combinado diretamente com o responsável, por <b>Pix</b> ou outra forma acordada, e é <b>antecipado</b>, referente ao período que vai começar.</li>
+  <li>Se o pagamento atrasar mais de <b>10 dias</b>, o acesso pode ser pausado. Os dados ficam guardados e o acesso volta assim que o pagamento é feito, desde que dentro do prazo do item 11.</li>
+  <li>Os preços podem mudar. Qualquer aumento será avisado com pelo menos <b>30 dias</b> de antecedência e só vale a partir do período seguinte. Quem tem o preço de fundador mantém esse valor enquanto não cancelar.</li>
+</ul>
+
+<h2 id="cancelar">5. Cancelamento e arrependimento</h2>
+<ul>
+  <li>Você pode cancelar <b>quando quiser</b>, sem multa, avisando o responsável. O acesso continua até o fim do período já pago.</li>
+  <li><b>Direito de arrependimento:</b> como a contratação é feita a distância, você pode desistir em até <b>7 dias</b> após o primeiro pagamento e receber todo o valor de volta, como prevê o artigo 49 do Código de Defesa do Consumidor.</li>
+  <li>Fora desse prazo, não há devolução proporcional de meses ou anos já pagos, exceto se o serviço ficar indisponível por culpa do responsável por mais de 7 dias seguidos. Nesse caso, o período parado é devolvido ou compensado.</li>
+  <li>Antes de cancelar, você pode baixar todos os seus lançamentos em planilha, em <b>Ajustes → Baixar planilha</b>.</li>
+</ul>
+
+<h2 id="dados">6. Quais dados guardamos</h2>
+<ul>
+  <li><b>Dados da conta:</b> nome de usuário, o nome de cada pessoa da conta, o tipo de conta (Individual ou Casal) e a data de criação e do último acesso.</li>
+  <li><b>Senha:</b> guardada <b>criptografada</b>. Nem o responsável consegue ver qual é a sua senha.</li>
+  <li><b>Dados financeiros que você lança:</b> valores, categorias, descrições, datas, parcelas, reserva, metas, limites e desafios.</li>
+  <li><b>No seu próprio celular</b> (armazenamento do navegador), o app guarda só preferências, como "esconder valores" e "quem usa este celular", e a sessão de login. Não usamos cookies de propaganda nem ferramentas de rastreamento.</li>
+</ul>
+<p>Não pedimos CPF, endereço, dados de cartão nem senha de banco para usar o app.</p>
+
+<h2 id="uso">7. Para que usamos os dados</h2>
+<ul>
+  <li>Para fazer o app funcionar: mostrar seus lançamentos, fazer as contas e os resumos e manter você conectado.</li>
+  <li>Para dar suporte quando você pedir ajuda.</li>
+  <li>Para cobrança e comunicação sobre a sua assinatura.</li>
+</ul>
+<p>A base legal é a <b>execução do contrato</b> com você (art. 7º, V, da LGPD). Seus dados <b>não são vendidos</b>, não são usados para propaganda e não são compartilhados com outras empresas para outros fins.</p>
+
+<h2 id="acesso">8. Quem pode ver os seus dados</h2>
+<ul>
+  <li><b>Só quem entra com o seu usuário e senha</b> vê os seus dados financeiros no app. O próprio banco de dados bloqueia o acesso de uma conta aos dados de outra.</li>
+  <li>Nenhum usuário vê quem mais usa o app.</li>
+  <li>Pela área de administração do app, o responsável vê <b>apenas</b> o nome de usuário, os nomes, o tipo de conta e as datas de criação e de último acesso. <b>Ele não vê valores nem lançamentos.</b></li>
+  <li>Por ser quem administra o sistema, o responsável tem acesso técnico ao banco de dados. Ele se compromete a <b>não consultar seus dados financeiros</b>, exceto se você pedir, por exemplo para resolver um problema, ou se houver obrigação legal ou ordem judicial.</li>
+  <li><b>Fornecedores de tecnologia:</b> os dados ficam guardados na <b>Supabase</b> (banco de dados e login) e o site é publicado por um serviço de hospedagem. Esses fornecedores só armazenam e processam os dados para o app funcionar, seguindo seus próprios contratos de segurança.</li>
+</ul>
+
+<h2 id="seguranca">9. Segurança e onde os dados ficam</h2>
+<ul>
+  <li>O banco de dados fica em servidor da Supabase na região de <b>São Paulo, Brasil</b>.</li>
+  <li>A conexão com o app é <b>criptografada</b> (HTTPS) e as senhas são guardadas criptografadas.</li>
+  <li>Cada conta só acessa os próprios dados por regras de segurança do banco (Row Level Security).</li>
+  <li>Nenhum sistema é 100% invulnerável. Se acontecer um incidente de segurança que possa causar risco a você, avisaremos você e a Autoridade Nacional de Proteção de Dados (ANPD), como manda a lei.</li>
+</ul>
+
+<h2 id="direitos">10. Seus direitos (LGPD)</h2>
+<p>A qualquer momento você pode pedir, gratuitamente:</p>
+<ul>
+  <li>confirmação de que guardamos dados seus e acesso a eles;</li>
+  <li>correção de dados errados ou desatualizados;</li>
+  <li>uma cópia dos seus dados (portabilidade). Você mesmo pode baixar a planilha em Ajustes;</li>
+  <li>exclusão dos seus dados e da sua conta;</li>
+  <li>informação sobre com quem os dados são compartilhados.</li>
+</ul>
+<p>É só falar com o responsável pelo contato do item 14. Respondemos em até <b>15 dias</b>.</p>
+
+<h2 id="exclusao">11. Por quanto tempo guardamos e exclusão</h2>
+<ul>
+  <li>Os dados ficam guardados enquanto a conta estiver ativa.</li>
+  <li>Depois do cancelamento, ou de mais de <b>90 dias</b> com o acesso pausado por falta de pagamento, a conta e <b>todos</b> os dados financeiros são <b>apagados de vez</b>. Antes disso, você pode baixar a sua planilha.</li>
+  <li>Se você pedir a exclusão, ela é feita em até <b>15 dias</b>. Só guardamos o que a lei obrigar, como registros de pagamento.</li>
+</ul>
+
+<h2 id="responsabilidade">12. Limites de responsabilidade</h2>
+<ul>
+  <li>Os números do app dependem dos lançamentos que <b>você</b> faz. Se algo for lançado errado ou deixar de ser lançado, os resumos também ficam errados.</li>
+  <li>As decisões financeiras são suas. O app é uma ferramenta de organização e não garante resultados como economia ou pagamento de dívidas.</li>
+  <li>Trabalhamos para o app ficar sempre no ar, mas podem acontecer paradas por manutenção ou falhas de fornecedores. Avisaremos sempre que possível.</li>
+  <li>Nada nestes termos tira os direitos que você tem pelo Código de Defesa do Consumidor.</li>
+</ul>
+
+<h2 id="mudancas">13. Mudanças nestes termos</h2>
+<p>Estes termos podem ser atualizados. A data no topo da página mostra a versão em vigor. Mudanças importantes serão avisadas com pelo menos <b>15 dias</b> de antecedência. Se você não concordar, pode cancelar sem custo.</p>
+
+<h2 id="contato">14. Contato</h2>
+<p>Dúvidas, pedidos sobre seus dados, suporte ou cancelamento: fale diretamente com <b>Gean Liberato</b>, pelo mesmo canal (WhatsApp ou e-mail) usado para contratar o app.</p>
+<p>Fica eleito o foro do domicílio do usuário para resolver qualquer questão relacionada a estes termos.</p>
+
+<p class="note">Finanças da Casa · Termos de Uso e Política de Privacidade · versão de 12/11/2026.</p>
+</main>
+</body>
+</html>
