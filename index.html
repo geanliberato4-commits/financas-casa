@@ -224,6 +224,22 @@ body.solo .only-casal{display:none!important}
 .chal .bar i.ok{background:var(--in)} .chal .bar i.warn{background:var(--gold)} .chal .bar i.bad{background:var(--out)}
 .chal-prev{font-size:13px;padding:9px 11px;border-radius:12px;background:rgba(255,255,255,.035);border:1px solid var(--line)}
 .chal-form{display:flex;flex-direction:column;gap:10px}
+/* Contas fixas */
+.check-row{flex-direction:row!important;align-items:flex-start;gap:12px!important;padding:12px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.02);cursor:pointer}
+.check-row input{width:22px;height:22px;margin:2px 0 0;accent-color:var(--gold);flex:none;padding:0}
+.check-row span{display:flex;flex-direction:column;gap:2px}
+.check-row b{color:var(--ink);font-size:15px}
+.check-row small{color:var(--muted);font-size:12.5px;font-weight:400}
+.fx-row{display:grid;grid-template-columns:40px 1fr auto;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+.fx-row:first-child{border-top:0}
+.fx-row.off{opacity:.5}
+.fx-row .t{min-width:0}
+.fx-row .t b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fx-row .t small{color:var(--muted);font-size:12px}
+.fx-row .v{text-align:right;font-weight:600;white-space:nowrap}
+.fx-acts{grid-column:2/-1;display:flex;flex-wrap:wrap;gap:8px}
+.fx-sum{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid var(--line)}
+.fx-sum b{color:var(--ink)}
 /* Manual */
 .card.help-hero{flex-direction:row;gap:14px;align-items:center}
 .help-hero img{width:54px;height:54px;border-radius:14px;flex:none}
@@ -569,6 +585,7 @@ input::placeholder{color:var(--faint)}
           <div class="t"><b>Esconder valores</b><small>Mostra R$ •••• no lugar dos números</small></div>
           <label class="switch"><input type="checkbox" id="hideSwitch" aria-label="Esconder valores"><span></span></label>
         </div>
+        <button class="set-row" id="fixBtn"><div class="t"><b>Contas fixas</b><small id="fixHint">Aluguel, internet, salário: lançados sozinhos todo mês</small></div><span class="chev">›</span></button>
         <button class="set-row" id="cfgBtn"><div class="t"><b>Limites e categorias</b><small>Limite por mês e as suas categorias</small></div><span class="chev">›</span></button>
         <button class="set-row" id="exportBtn"><div class="t"><b>Baixar planilha</b><small>Todos os lançamentos, para Excel ou Google Planilhas</small></div><span class="chev">›</span></button>
       </div>
@@ -628,6 +645,16 @@ input::placeholder{color:var(--faint)}
  <p>O quadro <b>Parcelas a pagar</b>, no Início, mostra quanto ainda falta pagar nos próximos meses.</p></div>
         </details>
         <details>
+          <summary><span class="ico"><span class="ico" data-icon="repeat"></span></span><span class="t">Contas fixas (aluguel, internet, salário)</span></summary>
+          <div class="body"><p>Para não ter que lançar todo mês a mesma conta, cadastre ela como <b>conta fixa</b>. Há dois jeitos:</p>
+ <ul>
+   <li>Ao lançar, marque <b>Repetir todo mês</b>.</li>
+   <li>Ou vá em <b>Ajustes → Contas fixas → + Nova</b>.</li>
+ </ul>
+ <p>No começo de cada mês, o app lança sozinho no dia escolhido. Se o valor mudar num mês, como a conta de luz, edite só o lançamento daquele mês.</p>
+ <p>Em <b>Contas fixas</b> você pode <b>Pausar</b> (para de lançar até você voltar), <b>Editar</b> ou <b>Tirar</b> (para de vez). O que já foi lançado continua.</p></div>
+        </details>
+        <details>
           <summary><span class="ico"><span class="ico" data-icon="list"></span></span><span class="t">Editar, excluir e desfazer</span></summary>
           <div class="body"><p>Toque em qualquer lançamento para <b>editar</b> ou <b>excluir</b>. Numa compra parcelada, dá para excluir só uma parcela ou todas.</p>
  <p>Errou? Depois de salvar ou excluir aparece um aviso com o botão <b>Desfazer</b> por alguns segundos.</p></div>
@@ -662,7 +689,7 @@ input::placeholder{color:var(--faint)}
           <summary><span class="ico"><span class="ico" data-icon="wallet"></span></span><span class="t">Quanto ainda dá para gastar</span></summary>
           <div class="body"><p>No Início, logo abaixo do saldo, o app mostra quanto ainda dá para gastar até o fim do mês sem atrapalhar o que você quer guardar.</p>
  <p>A conta é: <b>o que entrou</b> menos <b>o que já foi gasto</b> menos <b>a meta de guardar</b> do mês. O resultado é dividido pelos dias que faltam, para dar um valor por dia.</p>
- <p>Dica: lance as contas fixas do mês (aluguel, luz, internet) assim que souber o valor. Assim esse número fica certo desde o começo do mês.</p></div>
+ <p>Dica: cadastre o aluguel, a internet e outras contas em <b>Contas fixas</b>. Elas entram logo no começo do mês e esse número já fica certo desde o dia 1.</p></div>
         </details>
         <details>
           <summary><span class="ico"><span class="ico" data-icon="target"></span></span><span class="t">Desafio do mês</span></summary>
@@ -734,6 +761,10 @@ input::placeholder{color:var(--faint)}
       <label for="fParc">Parcelas<select id="fParc"></select></label>
       <div class="parc-info num" id="parcInfo">À vista</div>
     </div>
+    <label class="check-row" id="fixWrap" for="fFixa">
+      <input type="checkbox" id="fFixa">
+      <span><b>Repetir todo mês</b><small>Conta fixa: o app lança sozinho todo mês, no mesmo dia</small></span>
+    </label>
     <label for="fDesc">Descrição (opcional)
       <input id="fDesc" autocomplete="off" placeholder="Ex.: mercado do mês">
     </label>
@@ -776,6 +807,34 @@ input::placeholder{color:var(--faint)}
   </form>
 </div>
 
+<!-- ============ Folha: contas fixas ============ -->
+<div class="scrim" id="fixScrim" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="fixTitle">
+    <div class="card-head"><h1 id="fixTitle">Contas fixas</h1><button type="button" class="chip-btn" id="fixNew">+ Nova</button></div>
+    <p class="hint" style="margin:0">O app lança cada conta fixa sozinho, todo mês, no dia escolhido. Se o valor mudar num mês (como a conta de luz), é só editar o lançamento daquele mês.</p>
+    <form class="adm-form" id="fixForm" hidden novalidate>
+      <div class="seg two" role="group" aria-label="Tipo">
+        <button type="button" data-fxtipo="saida" aria-pressed="true">Gasto</button>
+        <button type="button" data-fxtipo="entrada" aria-pressed="false">Ganho</button>
+      </div>
+      <label for="fxDesc">Nome<input id="fxDesc" maxlength="50" placeholder="Ex.: Aluguel" autocomplete="off"></label>
+      <div class="row2">
+        <label for="fxValor">Valor (R$)<input id="fxValor" inputmode="decimal" placeholder="0,00"></label>
+        <label for="fxDia">Todo dia<select id="fxDia"></select></label>
+      </div>
+      <div class="row2">
+        <label for="fxCat">Categoria<select id="fxCat"></select></label>
+        <label for="fxQuem" class="only-casal">Quem<select id="fxQuem"></select></label>
+      </div>
+      <label for="fxInicio" id="fxInicioWrap">Começar a lançar<select id="fxInicio"><option value="0">Neste mês</option><option value="1">No mês que vem</option></select></label>
+      <div class="err" id="fxErr" role="alert"></div>
+      <div class="actions"><button type="button" class="btn sec" id="fxCancel">Cancelar</button><button type="submit" class="btn pri" id="fxSave">Salvar</button></div>
+    </form>
+    <div id="fixList"></div>
+    <div class="actions"><button type="button" class="btn sec" id="fixClose">Fechar</button></div>
+  </div>
+</div>
+
 <!-- ============ Folha: meta ============ -->
 <div class="scrim" id="goalScrim" hidden>
   <form class="sheet" id="goalSheet" role="dialog" aria-modal="true" aria-labelledby="gTitle" novalidate>
@@ -809,6 +868,7 @@ input::placeholder{color:var(--faint)}
     home:'<path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>',
     list:'<path d="M9 6h12M9 12h12M9 18h12"/><path d="M4 6h.01M4 12h.01M4 18h.01"/>',
     piggy:'<path d="M5 11.5C5 8 8.1 6 12 6c1.8 0 3.3.4 4.5 1.2L19 6v3.3c.8.7 1.3 1.6 1.5 2.7H22v3h-1.8c-.5 1-1.3 1.9-2.2 2.5V20h-3v-1.6c-.9.2-1.9.3-3 .3s-2.1-.1-3-.3V20H6v-2.4c-.6-.6-1-1.4-1-2.3"/><path d="M16 10.5h.01"/><path d="M3 10c0 1 .7 1.5 2 1.5"/>',
+    repeat:'<path d="M17 2l4 4-4 4"/><path d="M3 11V9a3 3 0 0 1 3-3h15"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a3 3 0 0 1-3 3H3"/>',
     help:'<circle cx="12" cy="12" r="9"/><path d="M9.5 9.2a2.6 2.6 0 0 1 5 .9c0 1.7-2.5 2.3-2.5 3.9"/><path d="M12 17h.01"/>',
     gear:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',
     plus:'<path d="M12 5v14M5 12h14"/>',
@@ -865,6 +925,7 @@ input::placeholder{color:var(--faint)}
   // ================= Estado =================
   let all = [];            // lançamentos
   let goals = [];          // outras metas
+  let fixas = [];          // contas fixas
   let members = [];        // [{nome}] as duas pessoas do casal
   let me = null;           // {nome} quem usa este celular
   let conta = null, uid = null;
@@ -1055,7 +1116,7 @@ input::placeholder{color:var(--faint)}
     const ic = x.tipo==="reserva" ? svg("piggy") : catIcon(x.categoria);
     const sign = x.tipo==="entrada" ? "+" : x.tipo==="saida" ? "−" : (x.valor<0?"−":"+");
     const title = x.descricao || (x.tipo==="reserva" ? (x.valor<0?"Retirada da reserva":"Guardado na reserva") : x.categoria);
-    const sub = [x.tipo==="reserva"?"Reserva":x.categoria, x.quem].filter(Boolean).join(" · ");
+    const sub = [x.fixa_id?"Fixa":null, x.tipo==="reserva"?"Reserva":x.categoria, x.quem].filter(Boolean).join(" · ");
     return `<button type="button" class="item" data-open="${esc(x.id)}"><div class="ico ${cls}">${ic}</div>
       <div class="t"><b>${esc(title)}</b><small>${esc(sub)}</small></div>
       <div class="v ${cls} num">${sign} ${hideVals?"R$ ••••":brl.format(Math.abs(x.valor))}</div></button>`;
@@ -1309,6 +1370,116 @@ input::placeholder{color:var(--faint)}
     toast(`Desafio: ${c} até ${brl.format(v)}`, async()=>{ desafio=old; render(); await saveConfig(); });
   });
 
+  // ================= Contas fixas =================
+  let fxTipo = "saida", fxEditing = null, fxDelPending = null;
+  $("fxDia").innerHTML = Array.from({length:31},(_,i)=>`<option value="${i+1}">${i+1}</option>`).join("");
+  function setFxTipo(t, keepCat){
+    fxTipo = t;
+    document.querySelectorAll("[data-fxtipo]").forEach(b=>b.setAttribute("aria-pressed", String(b.dataset.fxtipo===t)));
+    const cur = keepCat || $("fxCat").value;
+    const cats = catsFor(t).slice(); if(keepCat && !cats.includes(keepCat)) cats.push(keepCat);
+    $("fxCat").innerHTML = cats.map(c=>`<option${c===cur?" selected":""}>${esc(c)}</option>`).join("");
+  }
+  function drawFixas(){
+    const ativos = fixas.filter(f=>f.ativa);
+    const gastos = ativos.filter(f=>f.tipo==="saida").reduce((a,f)=>a+Number(f.valor),0);
+    const ganhos = ativos.filter(f=>f.tipo==="entrada").reduce((a,f)=>a+Number(f.valor),0);
+    if(!fixas.length){ $("fixList").innerHTML = `<p class="empty">Nenhuma conta fixa ainda. Toque em <b>+ Nova</b> para cadastrar o aluguel, a internet ou o salário, por exemplo.</p>`; return; }
+    const ord = fixas.slice().sort((a,b)=>(b.ativa-a.ativa) || (a.tipo===b.tipo?0:(a.tipo==="saida"?-1:1)) || a.dia-b.dia);
+    $("fixList").innerHTML = `<div class="fx-sum num"><span>Gastos fixos <b>${money(gastos)}</b>/mês</span>${ganhos?`<span>Ganhos fixos <b>${money(ganhos)}</b>/mês</span>`:""}</div>` +
+      ord.map(f=>{
+        const cls = f.tipo==="entrada"?"in":"out";
+        return `<div class="fx-row${f.ativa?"":" off"}">
+          <div class="ico ${cls}">${catIcon(f.categoria)}</div>
+          <div class="t"><b>${esc(f.descricao)}</b><small>todo dia ${f.dia} · ${esc(f.categoria||"")}${f.quem && !isSolo()?" · "+esc(f.quem):""}${f.ativa?"":" · pausada"}</small></div>
+          <div class="v ${cls} num">${f.tipo==="entrada"?"+":"−"} ${money(Number(f.valor))}</div>
+          <div class="fx-acts">
+            <button type="button" class="chip-btn" data-fxedit="${esc(f.id)}">Editar</button>
+            <button type="button" class="chip-btn" data-fxtoggle="${esc(f.id)}">${f.ativa?"Pausar":"Voltar a lançar"}</button>
+            <button type="button" class="chip-btn" data-fxdel="${esc(f.id)}"${fxDelPending===f.id?' style="color:var(--out);border-color:var(--out)"':""}>${fxDelPending===f.id?"Tirar de vez":"Tirar"}</button>
+          </div>
+          ${fxDelPending===f.id?`<div class="fx-acts hint" style="font-size:12px">Para de lançar daqui para frente. Os lançamentos que já existem continuam.</div>`:""}
+        </div>`;
+      }).join("");
+    const n = ativos.filter(f=>f.tipo==="saida").length;
+    $("fixHint").textContent = fixas.length ? `${ativos.length} ativa${ativos.length===1?"":"s"} · ${money(gastos)} de gastos fixos por mês` : "Aluguel, internet, salário: lançados sozinhos todo mês";
+  }
+  function openFixForm(f){
+    fxEditing = f || null;
+    $("fixForm").hidden = false; $("fxErr").textContent = "";
+    $("fxQuem").innerHTML = members.map(m=>`<option>${esc(m.nome)}</option>`).join("") + (isSolo()?"":"<option>Os dois</option>");
+    setFxTipo(f ? f.tipo : "saida", f ? f.categoria : null);
+    if(!f){ $("fxCat").value = fxTipo==="saida" ? (catsFor("saida").includes("Moradia")?"Moradia":catsFor("saida")[0]) : catsFor("entrada")[0]; }
+    $("fxDesc").value = f ? f.descricao : "";
+    $("fxValor").value = f ? Number(f.valor).toFixed(2).replace(".",",") : "";
+    $("fxDia").value = String(f ? f.dia : new Date().getDate());
+    $("fxQuem").value = f && f.quem ? f.quem : (me ? me.nome : "");
+    $("fxInicioWrap").hidden = !!f;
+    $("fxSave").textContent = f ? "Salvar alteração" : "Salvar";
+    $("fxDesc").focus();
+  }
+  $("fixBtn").onclick = ()=>{ fxDelPending=null; $("fixForm").hidden = true; drawFixas(); $("fixScrim").hidden = false; };
+  $("fixClose").onclick = ()=>{ $("fixScrim").hidden = true; };
+  $("fixScrim").addEventListener("click", e=>{ if(e.target===$("fixScrim")) $("fixScrim").hidden = true; });
+  $("fixNew").onclick = ()=>openFixForm();
+  $("fxCancel").onclick = ()=>{ $("fixForm").hidden = true; };
+  $("fixForm").addEventListener("click", e=>{ const b=e.target.closest("[data-fxtipo]"); if(b){ setFxTipo(b.dataset.fxtipo); $("fxCat").selectedIndex=0; } });
+  $("fixForm").addEventListener("submit", async e=>{
+    e.preventDefault();
+    const desc = $("fxDesc").value.trim(), v = parseValor($("fxValor").value), dia = Number($("fxDia").value);
+    if(!desc){ $("fxErr").textContent = "Dê um nome, por exemplo Aluguel."; return; }
+    if(!(v>0)){ $("fxErr").textContent = "Digite o valor, por exemplo 1.500,00."; return; }
+    const row = { tipo:fxTipo, descricao:desc.slice(0,50), valor:v, dia, categoria:$("fxCat").value, quem: isSolo() ? (me?me.nome:"") : $("fxQuem").value };
+    $("fxSave").disabled = true;
+    let res;
+    if(fxEditing){
+      res = await db.from("fin_fixas").update(row).eq("id", fxEditing.id).select().single();
+    } else {
+      const now = new Date(), add = Number($("fxInicio").value);
+      const ini = new Date(now.getFullYear(), now.getMonth()+add, 1);
+      row.inicio = `${ini.getFullYear()}-${pad(ini.getMonth()+1)}-01`;
+      res = await db.from("fin_fixas").insert(row).select().single();
+    }
+    $("fxSave").disabled = false;
+    if(res.error){ $("fxErr").textContent = "Não deu para salvar. Confira a internet."; return; }
+    const wasEdit = !!fxEditing;
+    fixas = fixas.filter(f=>f.id!==res.data.id).concat(res.data);
+    $("fixForm").hidden = true; drawFixas();
+    if(!wasEdit){ await db.rpc("fin_gerar_fixas"); await loadAll(); }
+    toast(wasEdit ? "Conta fixa atualizada. Vale a partir do próximo lançamento." : (Number($("fxInicio").value) ? `Conta fixa criada. Começa a lançar no mês que vem, dia ${dia}.` : `Conta fixa criada e lançada neste mês, dia ${dia}.`));
+  });
+  $("fixList").addEventListener("click", async e=>{
+    const ed = e.target.closest("[data-fxedit]");
+    if(ed){ openFixForm(fixas.find(f=>f.id===ed.dataset.fxedit)); $("fixScrim").querySelector(".sheet").scrollTop = 0; return; }
+    const tg = e.target.closest("[data-fxtoggle]");
+    if(tg){
+      const f = fixas.find(x=>x.id===tg.dataset.fxtoggle); if(!f) return;
+      const upd = { ativa: !f.ativa };
+      if(!f.ativa){ // ao voltar, não lança os meses em que ficou pausada
+        const now = new Date(), prev = new Date(now.getFullYear(), now.getMonth()-1, 1);
+        const prevS = `${prev.getFullYear()}-${pad(prev.getMonth()+1)}-01`;
+        if(!f.ultimo_mes || f.ultimo_mes < prevS) upd.ultimo_mes = prevS;
+      }
+      const r = await db.from("fin_fixas").update(upd).eq("id", f.id).select().single();
+      if(r.error){ toast("Não deu para salvar. Confira a internet."); return; }
+      fixas = fixas.filter(x=>x.id!==f.id).concat(r.data); drawFixas();
+      if(upd.ativa){ await db.rpc("fin_gerar_fixas"); await loadAll(); toast(`${f.descricao} voltou a ser lançada todo mês`); }
+      else toast(`${f.descricao} pausada. Não lança mais até você voltar.`);
+      return;
+    }
+    const dl = e.target.closest("[data-fxdel]");
+    if(dl){
+      const id = dl.dataset.fxdel;
+      if(fxDelPending !== id){ fxDelPending = id; drawFixas(); return; }
+      fxDelPending = null;
+      const f = fixas.find(x=>x.id===id);
+      const r = await db.from("fin_fixas").delete().eq("id", id);
+      if(r.error){ toast("Não deu para tirar. Confira a internet."); return; }
+      fixas = fixas.filter(x=>x.id!==id); all.forEach(x=>{ if(x.fixa_id===id) x.fixa_id=null; }); drawFixas(); render();
+      toast(`${f?f.descricao:"Conta fixa"} tirada das contas fixas`);
+    }
+  });
+
   // ================= Navegação e filtros =================
   $("prevM").onclick = ()=>{ view.setMonth(view.getMonth()-1); render(); };
   $("nextM").onclick = ()=>{ view.setMonth(view.getMonth()+1); render(); };
@@ -1358,12 +1529,16 @@ input::placeholder{color:var(--faint)}
   function updParc(){
     const n = Number($("fParc").value)||1;
     const show = tipo==="saida" && !editing;
+    $("fixWrap").hidden = !!editing || tipo==="reserva" || n>1;
+    if($("fixWrap").hidden) $("fFixa").checked = false;
+    $("parcWrap").style.opacity = $("fFixa").checked ? .4 : 1; $("fParc").disabled = $("fFixa").checked;
     $("parcWrap").hidden = !show;
     $("valorLbl").textContent = show && n>1 ? "Valor total da compra (R$)" : "Valor (R$)";
     const v = parseValor($("fValor").value);
     $("parcInfo").textContent = n<=1 ? "À vista" : (v>0 ? `${n}x de ${brl.format(v/n)}` : `${n} parcelas, uma por mês`);
   }
   $("fParc").addEventListener("change", updParc);
+  $("fFixa").addEventListener("change", ()=>{ if($("fFixa").checked) $("fParc").value="1"; updParc(); });
   $("fValor").addEventListener("input", updParc);
   function setTipo(t){
     tipo=t;
@@ -1411,7 +1586,7 @@ input::placeholder{color:var(--faint)}
 
   function openSheet(x, preset){
     editing = x && x.id ? x : null;
-    $("fErr").textContent=""; $("fParc").value="1";
+    $("fErr").textContent=""; $("fParc").value="1"; $("fFixa").checked=false;
     $("formTitle").textContent = editing ? "Editar lançamento" : "Novo lançamento";
     $("fSave").textContent = editing ? "Salvar alteração" : "Salvar";
     $("delZone").hidden = !editing;
@@ -1443,14 +1618,14 @@ input::placeholder{color:var(--faint)}
   $("fab").onclick=()=>openSheet();
   $("fCancel").onclick=closeSheet;
   $("scrim").addEventListener("click", e=>{ if(e.target===$("scrim")) closeSheet(); });
-  document.addEventListener("keydown", e=>{ if(e.key==="Escape"){ closeSheet(); $("cfgScrim").hidden=true; $("goalScrim").hidden=true; } });
+  document.addEventListener("keydown", e=>{ if(e.key==="Escape"){ closeSheet(); $("cfgScrim").hidden=true; $("goalScrim").hidden=true; $("fixScrim").hidden=true; } });
 
   function addMonths(dateStr, i){
     const [y,m,d] = dateStr.split("-").map(Number);
     const last = new Date(y, m-1+i+1, 0).getDate();
     return ymd(new Date(y, m-1+i, Math.min(d,last)));
   }
-  const RAW_FIELDS = ["id","conta_id","tipo","valor","categoria","descricao","data","quem","criado_por","criado_em","grupo","parcela","parcelas"];
+  const RAW_FIELDS = ["id","conta_id","tipo","valor","categoria","descricao","data","quem","criado_por","criado_em","grupo","parcela","parcelas","fixa_id","fixa_mes"];
   const raw = x => Object.fromEntries(RAW_FIELDS.filter(k=>x[k]!==undefined).map(k=>[k,x[k]]));
   function upsertLocal(rows){ rows.forEach(r=>{ const n=normRow(r); all = all.filter(x=>x.id!==n.id).concat(n); }); render(); }
 
@@ -1471,8 +1646,19 @@ input::placeholder{color:var(--faint)}
       });
       return;
     }
+    let fixaCriada = null;
+    if(e.fixa && e.tipo!=="reserva"){
+      const [fy,fm,fd] = e.data.split("-").map(Number);
+      const mesIni = `${fy}-${pad(fm)}-01`;
+      const fr = await db.from("fin_fixas").insert({ tipo:e.tipo, descricao: e.desc || doc.categoria, categoria: doc.categoria, valor: e.valor,
+        dia: fd, quem: e.quem, inicio: mesIni, ultimo_mes: mesIni }).select().single();
+      if(fr.error) throw fr.error;
+      fixaCriada = fr.data; fixas = fixas.filter(f=>f.id!==fixaCriada.id).concat(fixaCriada);
+      doc.fixa_id = fixaCriada.id; doc.fixa_mes = `${fy}-${pad(fm)}`;
+      if(!doc.descricao) doc.descricao = fixaCriada.descricao;
+    }
     let rows;
-    if(e.tipo==="saida" && e.parcelas>1){
+    if(e.tipo==="saida" && e.parcelas>1 && !fixaCriada){
       const n = e.parcelas, grupo = crypto.randomUUID();
       const cents = Math.round(e.valor*100), base = Math.floor(cents/n), resto = cents - base*n;
       rows = Array.from({length:n},(_,i)=>({ ...doc, valor:(base+(i===0?resto:0))/100, data:addMonths(e.data,i),
@@ -1483,9 +1669,10 @@ input::placeholder{color:var(--faint)}
     const [y,m] = e.data.split("-").map(Number); view = new Date(y,m-1,1);
     upsertLocal(ins);
     const ids = ins.map(r=>r.id);
-    toast(rows.length>1 ? `${rows.length} parcelas lançadas` : "Lançamento salvo", async()=>{
+    toast(fixaCriada ? `Conta fixa criada: lança todo dia ${fixaCriada.dia}` : rows.length>1 ? `${rows.length} parcelas lançadas` : "Lançamento salvo", async()=>{
       const r = await db.from("fin_lancamentos").delete().in("id", ids);
       if(r.error) throw r.error;
+      if(fixaCriada){ await db.from("fin_fixas").delete().eq("id", fixaCriada.id); fixas = fixas.filter(f=>f.id!==fixaCriada.id); }
       all = all.filter(x=>!ids.includes(x.id)); render();
     });
   }
@@ -1510,7 +1697,7 @@ input::placeholder{color:var(--faint)}
     $("fSave").disabled=true;
     try{
       await saveEntry({ tipo, valor:v, dir, cat, desc:$("fDesc").value.trim().slice(0,70), data:$("fData").value||todayStr(),
-        quem:$("fQuem").value, parcelas: Number($("fParc").value)||1, editing });
+        quem:$("fQuem").value, parcelas: Number($("fParc").value)||1, editing, fixa: !editing && $("fFixa").checked });
       closeSheet();
     }catch(err){ $("fErr").textContent = "Não deu para salvar agora. Confira a internet e tente de novo."; }
     finally{ $("fSave").disabled=false; }
@@ -1770,15 +1957,19 @@ input::placeholder{color:var(--faint)}
   let channel = null;
 
   async function loadAll(){
-    const [l, c, g] = await Promise.all([
+    try{ await db.rpc("fin_gerar_fixas"); }catch(e){}
+    const [l, c, g, fx] = await Promise.all([
       db.from("fin_lancamentos").select("*").order("data",{ascending:false}).limit(10000),
       db.from("fin_config").select("*").maybeSingle(),
-      db.from("fin_metas").select("*")
+      db.from("fin_metas").select("*"),
+      db.from("fin_fixas").select("*").order("dia")
     ]);
     if(l.error){ setStatus("Não consegui buscar os lançamentos. Confira a internet e abra de novo."); return; }
     all = l.data.map(normRow);
     if(c.data) applyConfig(c.data);
     goals = (g && !g.error && g.data) ? g.data : [];
+    fixas = (fx && !fx.error && fx.data) ? fx.data : [];
+    drawFixas();
     loaded = true; document.body.classList.remove("loading");
     setStatus(""); render();
   }
