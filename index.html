@@ -201,6 +201,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .switch input:checked+span::after{transform:translateX(18px)}
 .switch input:focus-visible+span{outline:2px solid var(--in);outline-offset:2px}
 .danger{color:var(--out);font-weight:600}
+body.solo .only-casal{display:none!important}
 /* Quanto ainda dá para gastar */
 .spend-val{font-family:var(--display);font-size:32px;font-weight:800;letter-spacing:-.02em;line-height:1.1}
 .spend-val.ok{background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -337,7 +338,7 @@ input::placeholder{color:var(--faint)}
 <body class="loading">
 
 <div class="splash" id="splash" aria-hidden="true">
-  <div class="splash-mark"><img class="logo" src="logo.png" alt=""><b>Finanças da Casa</b><small>Controle financeiro do casal</small></div>
+  <div class="splash-mark"><img class="logo" src="logo.png" alt=""><b>Finanças da Casa</b><small>Finanças pessoais e do casal</small></div>
 </div>
 
 <!-- ============ LOGIN ============ -->
@@ -345,21 +346,25 @@ input::placeholder{color:var(--faint)}
   <form id="loginForm" novalidate>
     <img class="logo" src="logo.png" alt="" aria-hidden="true">
     <h1>Finanças da Casa</h1>
-    <p>Entre com o usuário e a senha do casal.</p>
+    <p>Entre com seu usuário e senha.</p>
     <label for="lUser">Usuário<input id="lUser" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" required></label>
     <label for="lSenha">Senha<input id="lSenha" type="password" autocomplete="current-password" required></label>
     <div class="err" id="lErr" role="alert"></div>
     <button class="btn pri" type="submit" id="lBtn">Entrar</button>
-    <p class="hint" style="text-align:center">Esqueceu a senha? Peça para quem criou a conta de vocês trocar.</p>
+    <p class="hint" style="text-align:center">Esqueceu a senha? Peça para quem criou a sua conta trocar.</p>
   </form>
   <form id="setupForm" hidden novalidate>
     <img class="logo" src="logo.png" alt="" aria-hidden="true">
     <h1>Configurar o app</h1>
-    <p>Este é o primeiro acesso. Crie a conta do seu casal. Ela será a conta de administrador, a única que pode criar contas para outros casais.</p>
-    <label for="stUser">Usuário do casal<input id="stUser" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="ex.: gean.e.esposa" autocomplete="username"></label>
+    <p>Este é o primeiro acesso. Crie a sua conta. Ela será a de administrador, a única que pode criar contas para outras pessoas.</p>
+    <div class="seg two" role="group" aria-label="Tipo de conta" id="stTipo">
+      <button type="button" data-sttipo="casal" aria-pressed="true">Casal</button>
+      <button type="button" data-sttipo="individual" aria-pressed="false">Individual</button>
+    </div>
+    <label for="stUser">Usuário<input id="stUser" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="ex.: gean.e.esposa" autocomplete="username"></label>
     <div class="row2">
       <label for="stN1">Seu nome<input id="stN1" maxlength="30" placeholder="Gean"></label>
-      <label for="stN2">Nome do par<input id="stN2" maxlength="30" placeholder="Esposa"></label>
+      <label for="stN2" id="stN2Wrap">Nome do par<input id="stN2" maxlength="30" placeholder="Esposa"></label>
     </div>
     <label for="stS1">Senha (mínimo 6 caracteres)<input id="stS1" type="password" autocomplete="new-password"></label>
     <label for="stS2">Repita a senha<input id="stS2" type="password" autocomplete="new-password"></label>
@@ -521,25 +526,34 @@ input::placeholder{color:var(--faint)}
       <div class="card">
         <div class="me"><div class="avatar" id="meAvatar">?</div><div><b id="meName">—</b><div class="hint" id="meUser"></div></div></div>
         <form class="cfg-names" id="namesForm">
-          <div class="row2">
-            <label for="nm1">Pessoa 1<input id="nm1" maxlength="30"></label>
-            <label for="nm2">Pessoa 2<input id="nm2" maxlength="30"></label>
+          <label style="margin:0">Tipo de conta</label>
+          <div class="seg two" role="group" aria-label="Tipo de conta" id="tipoSeg">
+            <button type="button" data-tipoconta="casal" aria-pressed="true">Casal</button>
+            <button type="button" data-tipoconta="individual" aria-pressed="false">Individual</button>
+          </div>
+          <div class="row2" id="namesRow">
+            <label for="nm1"><span id="nm1Lbl">Pessoa 1</span><input id="nm1" maxlength="30"></label>
+            <label for="nm2" id="nm2Wrap">Pessoa 2<input id="nm2" maxlength="30"></label>
           </div>
           <div class="row2" style="align-items:end">
-            <label for="deviceWho">Quem usa este celular<select id="deviceWho"></select></label>
-            <button class="chip-btn" type="submit" style="height:44px">Salvar nomes</button>
+            <label for="deviceWho" id="whoWrap">Quem usa este celular<select id="deviceWho"></select></label>
+            <button class="chip-btn" type="submit" style="height:44px">Salvar</button>
           </div>
         </form>
       </div>
 
       <div class="card" id="adminCard" hidden>
-        <div class="card-head"><h2>Casais do app</h2><button class="chip-btn" id="admNewBtn">+ Novo casal</button></div>
-        <p class="hint" style="margin:0">Você vê só o usuário e os nomes. As finanças de cada casal ficam fechadas só para eles, e eles não veem que outros casais usam o app.</p>
+        <div class="card-head"><h2>Contas do app</h2><button class="chip-btn" id="admNewBtn">+ Nova conta</button></div>
+        <p class="hint" style="margin:0">Você vê só o usuário e os nomes. As finanças de cada conta ficam fechadas só para os donos dela, e ninguém vê quem mais usa o app.</p>
         <form class="adm-form" id="admForm" hidden novalidate>
+          <div class="seg two" role="group" aria-label="Tipo de conta">
+            <button type="button" data-admtipo="casal" aria-pressed="true">Casal</button>
+            <button type="button" data-admtipo="individual" aria-pressed="false">Individual</button>
+          </div>
           <label for="admUser">Usuário<input id="admUser" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="ex.: ana.e.beto"></label>
           <div class="row2">
-            <label for="admN1">Pessoa 1<input id="admN1" maxlength="30" placeholder="Ana"></label>
-            <label for="admN2">Pessoa 2<input id="admN2" maxlength="30" placeholder="Beto"></label>
+            <label for="admN1"><span id="admN1Lbl">Pessoa 1</span><input id="admN1" maxlength="30" placeholder="Ana"></label>
+            <label for="admN2" id="admN2Wrap">Pessoa 2<input id="admN2" maxlength="30" placeholder="Beto"></label>
           </div>
           <label for="admPw">Senha inicial (mínimo 6)<input id="admPw" autocomplete="off" autocapitalize="none"></label>
           <div class="err" id="admErr" role="alert"></div>
@@ -552,12 +566,12 @@ input::placeholder{color:var(--faint)}
           <div class="t"><b>Esconder valores</b><small>Mostra R$ •••• no lugar dos números</small></div>
           <label class="switch"><input type="checkbox" id="hideSwitch" aria-label="Esconder valores"><span></span></label>
         </div>
-        <button class="set-row" id="cfgBtn"><div class="t"><b>Limites e categorias</b><small>Limite por mês e as categorias de vocês</small></div><span class="chev">›</span></button>
+        <button class="set-row" id="cfgBtn"><div class="t"><b>Limites e categorias</b><small>Limite por mês e as suas categorias</small></div><span class="chev">›</span></button>
         <button class="set-row" id="exportBtn"><div class="t"><b>Baixar planilha</b><small>Todos os lançamentos, para Excel ou Google Planilhas</small></div><span class="chev">›</span></button>
       </div>
       <div class="card" style="gap:0">
         <div class="set-row"><div class="t"><b>Colocar na tela do iPhone</b><small>No Safari, toque em Compartilhar e depois em "Adicionar à Tela de Início".</small></div></div>
-        <button class="set-row" id="pwBtn"><div class="t"><b>Trocar senha</b><small>Vale para os dois, porque a conta é do casal</small></div><span class="chev">›</span></button>
+        <button class="set-row" id="pwBtn"><div class="t"><b>Trocar senha</b><small id="pwHint">Vale para os dois, porque a conta é do casal</small></div><span class="chev">›</span></button>
         <form class="inline-form" id="pwForm" hidden style="padding-bottom:12px">
           <label for="pw1">Nova senha<input id="pw1" type="password" autocomplete="new-password"></label>
           <label for="pw2">Repita<input id="pw2" type="password" autocomplete="new-password"></label>
@@ -578,8 +592,8 @@ input::placeholder{color:var(--faint)}
         <details>
           <summary><span class="ico"><span class="ico" data-icon="home"></span></span><span class="t">Primeiros passos</span></summary>
           <div class="body"><ol>
-   <li>Entre com o <b>usuário e a senha</b> do casal. Os dois usam o mesmo login.</li>
-   <li>Vá em <b>Ajustes</b> e escolha <b>Quem usa este celular</b>. Assim tudo que você lançar já sai com o seu nome.</li>
+   <li>Entre com o seu <b>usuário e senha</b>.<span class="only-casal"> Numa conta de casal, os dois usam o mesmo login.</span></li>
+   <li class="only-casal">Vá em <b>Ajustes</b> e escolha <b>Quem usa este celular</b>. Assim tudo que você lançar já sai com o seu nome.</li>
    <li>Para virar um app na tela do iPhone: no Safari, toque em <b>Compartilhar</b> e depois em <b>Adicionar à Tela de Início</b>.</li>
  </ol></div>
         </details>
@@ -607,7 +621,7 @@ input::placeholder{color:var(--faint)}
         <details>
           <summary><span class="ico"><span class="ico" data-icon="bag"></span></span><span class="t">Compras parceladas</span></summary>
           <div class="body"><p>Ao lançar uma <b>Saída</b>, escolha o número de parcelas e digite o <b>valor total</b> da compra. O app coloca uma parcela em cada mês.</p>
- <p>O quadro <b>Parcelas a pagar</b>, no Início, mostra quanto vocês ainda vão pagar nos próximos meses.</p></div>
+ <p>O quadro <b>Parcelas a pagar</b>, no Início, mostra quanto ainda falta pagar nos próximos meses.</p></div>
         </details>
         <details>
           <summary><span class="ico"><span class="ico" data-icon="list"></span></span><span class="t">Editar, excluir e desfazer</span></summary>
@@ -642,31 +656,31 @@ input::placeholder{color:var(--faint)}
         </details>
         <details>
           <summary><span class="ico"><span class="ico" data-icon="wallet"></span></span><span class="t">Quanto ainda dá para gastar</span></summary>
-          <div class="body"><p>No Início, logo abaixo do saldo, o app mostra quanto vocês ainda podem gastar até o fim do mês sem atrapalhar o que querem guardar.</p>
+          <div class="body"><p>No Início, logo abaixo do saldo, o app mostra quanto ainda dá para gastar até o fim do mês sem atrapalhar o que você quer guardar.</p>
  <p>A conta é: <b>o que entrou</b> menos <b>o que já foi gasto</b> menos <b>a meta de guardar</b> do mês. O resultado é dividido pelos dias que faltam, para dar um valor por dia.</p>
  <p>Dica: lance as contas fixas do mês (aluguel, luz, internet) assim que souber o valor. Assim esse número fica certo desde o começo do mês.</p></div>
         </details>
         <details>
           <summary><span class="ico"><span class="ico" data-icon="target"></span></span><span class="t">Desafio do mês</span></summary>
-          <div class="body"><p>Todo mês o app sugere <b>uma</b> categoria para vocês segurarem, normalmente a que mais pesou e não é conta essencial. A meta é gastar 20% menos do que a média dos últimos meses.</p>
- <p>Toque em <b>Aceitar desafio</b>, ou em <b>Escolher outro</b> para definir a categoria e o valor vocês mesmos. A barra mostra como estão indo, e no mês seguinte aparece o resultado.</p></div>
+          <div class="body"><p>Todo mês o app sugere <b>uma</b> categoria para segurar, normalmente a que mais pesou e não é conta essencial. A meta é gastar 20% menos do que a média dos últimos meses.</p>
+ <p>Toque em <b>Aceitar desafio</b>, ou em <b>Escolher outro</b> para escolher a categoria e o valor do seu jeito. A barra mostra como estão indo, e no mês seguinte aparece o resultado.</p></div>
         </details>
         <details>
           <summary><span class="ico"><span class="ico" data-icon="eye"></span></span><span class="t">Privacidade</span></summary>
           <div class="body"><ul>
-   <li>Só quem tem o usuário e a senha de vocês vê as finanças de vocês.</li>
+   <li>Só quem tem o seu usuário e senha vê as suas finanças.</li>
    <li>O <b>olho</b> no topo esconde todos os valores, para abrir o app perto de outras pessoas.</li>
-   <li>Para trocar a senha: <b>Ajustes → Trocar senha</b>. Ela muda para os dois.</li>
-   <li>Esqueceu a senha? Peça para quem criou a conta de vocês trocar.</li>
+   <li>Para trocar a senha: <b>Ajustes → Trocar senha</b>.<span class="only-casal"> Ela muda para os dois.</span></li>
+   <li>Esqueceu a senha? Peça para quem criou a sua conta trocar.</li>
  </ul></div>
         </details>
         <details id="helpAdmin" hidden>
           <summary><span class="ico"><span class="ico" data-icon="gear"></span></span><span class="t">Para o administrador</span></summary>
-          <div class="body"><p>Em <b>Ajustes → Casais do app</b> você cria a conta de outros casais, troca a senha de quem esqueceu e exclui contas.</p>
- <p>Você vê só o usuário, os nomes e o último acesso. As finanças de cada casal ficam fechadas só para eles.</p></div>
+          <div class="body"><p>Em <b>Ajustes → Contas do app</b> você cria contas para outros casais ou para pessoas sozinhas, troca a senha de quem esqueceu e exclui contas.</p>
+ <p>Você vê só o usuário, os nomes e o último acesso. As finanças de cada conta ficam fechadas só para os donos dela.</p></div>
         </details>
       </div>
-      <p class="help-foot">Dúvida que não está aqui? Fale com quem criou a conta de vocês.</p>
+      <p class="help-foot">Dúvida que não está aqui? Fale com quem criou a sua conta.</p>
     </section>
 
     <p class="status" id="status" hidden></p>
@@ -721,7 +735,7 @@ input::placeholder{color:var(--faint)}
     </label>
     <div class="row2">
       <label for="fData">Data<input id="fData" type="date"></label>
-      <label for="fQuem">Quem<select id="fQuem"></select></label>
+      <label for="fQuem" class="only-casal">Quem<select id="fQuem"></select></label>
     </div>
     <div class="err" id="fErr" role="alert"></div>
     <div class="actions">
@@ -850,6 +864,8 @@ input::placeholder{color:var(--faint)}
   let members = [];        // [{nome}] as duas pessoas do casal
   let me = null;           // {nome} quem usa este celular
   let conta = null, uid = null;
+  const isSolo = () => !!conta && conta.tipo==="individual";
+  const P = (casal, solo) => isSolo() ? solo : casal;
   let pct = 20, goal = 15000, limites = {}, cfgCats = null, desafio = null;
   let filtQuem = "", filtCat = "";
   let view = new Date(); view.setDate(1);
@@ -942,7 +958,7 @@ input::placeholder{color:var(--faint)}
     const pp = {};
     mes.filter(x=>x.tipo==="entrada").forEach(x=>{ const q=x.quem||"Sem nome"; pp[q]=(pp[q]||0)+x.valor; });
     $("people").innerHTML = Object.entries(pp).sort((a,b)=>b[1]-a[1]).map(([q,v])=>`<span>${esc(q)} <b>${money(v)}</b></span>`).join("");
-    $("people").hidden = !Object.keys(pp).length;
+    $("people").hidden = !Object.keys(pp).length || isSolo();
 
     renderReserva(ent, resMes, sumOf(all,"reserva"));
     renderCats(mes, prev, sai);
@@ -961,7 +977,7 @@ input::placeholder{color:var(--faint)}
     $("goalTxt").textContent = "meta " + money(goal);
     const falta = Math.max(0, goal - resTotal);
     $("goalBar").style.width = (goal>0 ? Math.min(100, Math.max(0, resTotal/goal*100)) : 0) + "%";
-    $("goalSub").textContent = goal>0 ? (falta<=0 ? "Meta alcançada! Parabéns aos dois." : `${Math.round(Math.max(0,resTotal)/goal*100)}% da meta · faltam ${money(falta)}`) : "";
+    $("goalSub").textContent = goal>0 ? (falta<=0 ? "Meta alcançada! Parabéns!" : `${Math.round(Math.max(0,resTotal)/goal*100)}% da meta · faltam ${money(falta)}`) : "";
     $("resMeta").textContent = moneyC(meta);
     $("resMes").textContent = moneyC(resMes);
     $("resFalta").textContent = moneyC(Math.max(0, meta - resMes));
@@ -972,7 +988,7 @@ input::placeholder{color:var(--faint)}
     $("sugUse").hidden = true; $("sugTrio").hidden = true;
     if(!st){
       $("sugPct").textContent = "—"; $("sugBase").textContent = "";
-      $("sugTxt").textContent = "Lancem os ganhos e os gastos. Com isso eu calculo quanto dá para guardar sem apertar as contas.";
+      $("sugTxt").textContent = P("Lancem os ganhos e os gastos. Com isso o app calcula quanto dá para guardar sem apertar as contas.","Lance seus ganhos e gastos. Com isso o app calcula quanto dá para guardar sem apertar as contas.");
     } else if(st.seguro<=0){
       $("sugPct").textContent = "0%"; $("sugBase").textContent = st.parcial ? "estimativa do mês atual" : `média de ${st.n} ${st.n===1?"mês":"meses"}`;
       $("sugTxt").textContent = `Os gastos (${money(st.gastos)}) estão iguais ou maiores que a renda (${money(st.renda)}). Vale ver nas categorias onde dá para cortar.`;
@@ -1125,7 +1141,7 @@ input::placeholder{color:var(--faint)}
   }
 
   function renderGoals(){
-    if(!goals.length){ $("goals").innerHTML = `<p class="empty">Crie metas para os planos de vocês, como uma viagem ou trocar de carro. O app calcula quanto guardar por mês para chegar no prazo.</p>`; return; }
+    if(!goals.length){ $("goals").innerHTML = `<p class="empty">Crie metas para os seus planos, como uma viagem ou trocar de carro. O app calcula quanto guardar por mês para chegar no prazo.</p>`; return; }
     const now = new Date();
     $("goals").innerHTML = goals.slice().sort((a,b)=>(a.prazo||"9999").localeCompare(b.prazo||"9999")).map(g=>{
       const alvo = Number(g.alvo)||0, ja = Number(g.guardado)||0, falta = Math.max(0, alvo-ja);
@@ -1169,7 +1185,7 @@ input::placeholder{color:var(--faint)}
     $("spendDays").textContent = `${dias} ${dias===1?"dia":"dias"} até ${lastDay}/${pad(now.getMonth()+1)}`;
     if(ent<=0){
       $("spendVal").className = "spend-val num"; $("spendVal").textContent = "—";
-      $("spendDay").textContent = "Lancem os ganhos deste mês para ver quanto ainda podem gastar.";
+      $("spendDay").textContent = P("Lancem os ganhos deste mês para ver quanto ainda podem gastar.","Lance seus ganhos deste mês para ver quanto ainda pode gastar.");
       $("spendBar").style.width = "0%"; $("spendCalc").textContent = "";
       return;
     }
@@ -1223,7 +1239,7 @@ input::placeholder{color:var(--faint)}
       const nm = monthName(new Date(now.getFullYear(), now.getMonth()-1, 1),{month:"long"});
       $("chalPrev").hidden = false;
       $("chalPrev").innerHTML = ok
-        ? `<b style="color:var(--in)">Desafio de ${esc(nm)} cumprido!</b> ${esc(desafio.categoria)}: ${money(g)} de ${money(desafio.meta)}.${econ>0?` Economizaram ${money(econ)} em relação à média.`:""}`
+        ? `<b style="color:var(--in)">Desafio de ${esc(nm)} cumprido!</b> ${esc(desafio.categoria)}: ${money(g)} de ${money(desafio.meta)}.${econ>0?` ${P("Economizaram","Você economizou")} ${money(econ)} em relação à média.`:""}`
         : `<b style="color:var(--out)">Desafio de ${esc(nm)} não deu.</b> ${esc(desafio.categoria)} ficou em ${money(g)}, a meta era ${money(desafio.meta)}. Vale tentar de novo.`;
     } else $("chalPrev").hidden = true;
 
@@ -1248,14 +1264,14 @@ input::placeholder{color:var(--faint)}
     $("chalTitle").textContent = "Desafio do mês";
     $("chalHint").textContent = "";
     if(!sug){
-      $("chalBody").innerHTML = `<p class="empty">Depois do primeiro mês com gastos lançados, o app sugere aqui uma categoria para vocês economizarem.</p>
+      $("chalBody").innerHTML = `<p class="empty">Depois do primeiro mês com gastos lançados, o app sugere aqui uma categoria para economizar.</p>
         <div class="row-actions" style="margin-top:8px"><button class="chip-btn" id="chalOther">Criar um desafio</button></div>`;
       return;
     }
     const econ = sug.base - sug.meta;
     $("chalBody").innerHTML = `<div class="chal-top"><div class="ico">${catIcon(sug.categoria)}</div>
         <div class="t"><b>${esc(sug.categoria)} até ${money(sug.meta)}</b><small class="num">a média dos últimos meses foi ${money(sug.base)}</small></div></div>
-      <p class="sug-line" style="margin-top:10px">Se conseguirem, sobram cerca de <b>${money(econ)}</b> a mais este mês${econ>0?`, ou ${money(econ*12)} em um ano`:""}.</p>
+      <p class="sug-line" style="margin-top:10px">${P("Se conseguirem","Se conseguir")}, sobram cerca de <b>${money(econ)}</b> a mais este mês${econ>0?`, ou ${money(econ*12)} em um ano`:""}.</p>
       <div class="row-actions" style="margin-top:10px"><button class="chip-btn" id="chalAccept" style="background:var(--gold-grad);color:var(--on-accent);border-color:transparent">Aceitar desafio</button><button class="chip-btn" id="chalOther">Escolher outro</button></div>`;
     $("chalBody").dataset.sug = JSON.stringify(sug);
   }
@@ -1330,7 +1346,7 @@ input::placeholder{color:var(--faint)}
   let tipo="saida", dir=1, cat=null, editing=null;
   $("fParc").innerHTML = Array.from({length:24},(_,i)=>`<option value="${i+1}">${i===0?"À vista":(i+1)+"x"}</option>`).join("");
   function fillQuem(){
-    const names = members.map(m=>m.nome).concat(["Os dois"]);
+    const names = isSolo() ? members.map(m=>m.nome) : members.map(m=>m.nome).concat(["Os dois"]);
     const cur = $("fQuem").value;
     $("fQuem").innerHTML = names.map(n=>`<option>${esc(n)}</option>`).join("");
     if(cur && names.includes(cur)) $("fQuem").value = cur;
@@ -1674,7 +1690,7 @@ input::placeholder{color:var(--faint)}
     const nome = $("gNome").value.trim().slice(0,40), alvo = parseValor($("gAlvo").value);
     const ja = $("gJa").value.trim() ? parseValor($("gJa").value) : 0;
     if(!nome){ $("gErr").textContent="Dê um nome para a meta."; return; }
-    if(!(alvo>0)){ $("gErr").textContent="Digite quanto vocês precisam juntar."; return; }
+    if(!(alvo>0)){ $("gErr").textContent="Digite quanto precisa juntar."; return; }
     const row = { nome, alvo, guardado: ja>0?ja:0, prazo: $("gPrazo").value ? $("gPrazo").value+"-01" : null };
     $("gSave").disabled = true;
     const {data, error} = await (gEditing ? db.from("fin_metas").update(row).eq("id", gEditing.id).select().single()
@@ -1764,16 +1780,21 @@ input::placeholder{color:var(--faint)}
   }
   function whoKey(){ return "fin-quem-"+(conta?conta.usuario:""); }
   function applyConta(){
-    members = [{nome:conta.nome1},{nome:conta.nome2}];
+    const solo = isSolo();
+    document.body.classList.toggle("solo", solo);
+    members = solo ? [{nome:conta.nome1}] : [{nome:conta.nome1},{nome:conta.nome2}];
     let who = null; try{ who = localStorage.getItem(whoKey()); }catch(e){}
     if(!members.some(m=>m.nome===who)) who = conta.nome1;
     me = {nome: who};
     const ini = who.trim().charAt(0).toUpperCase() || "?";
     $("avatarBtn").textContent = ini; $("meAvatar").textContent = ini;
-    $("meName").textContent = `${conta.nome1} e ${conta.nome2}`;
+    $("meName").textContent = solo ? conta.nome1 : `${conta.nome1} e ${conta.nome2}`;
+    document.querySelectorAll("[data-tipoconta]").forEach(b=>b.setAttribute("aria-pressed", String(b.dataset.tipoconta===(solo?"individual":"casal"))));
+    $("nm2Wrap").hidden = solo; $("whoWrap").hidden = solo; $("nm1Lbl").textContent = solo ? "Seu nome" : "Pessoa 1";
+    $("pwHint").textContent = solo ? "Escolha uma senha nova" : "Vale para os dois, porque a conta é do casal";
     $("meUser").textContent = `Usuário: ${conta.usuario}`;
     $("avatarBtn").setAttribute("aria-label", "Ajustes da conta");
-    $("nm1").value = conta.nome1; $("nm2").value = conta.nome2;
+    $("nm1").value = conta.nome1; $("nm2").value = conta.nome2 || "";
     $("deviceWho").innerHTML = members.map(m=>`<option${m.nome===who?" selected":""}>${esc(m.nome)}</option>`).join("");
     $("adminCard").hidden = !conta.admin;
     $("helpAdmin").hidden = !conta.admin;
@@ -1781,23 +1802,39 @@ input::placeholder{color:var(--faint)}
   }
   async function loadConta(session){
     uid = session.user.id;
-    const {data, error} = await db.from("fin_contas").select("usuario,nome1,nome2,admin").maybeSingle();
+    const {data, error} = await db.from("fin_contas").select("usuario,nome1,nome2,admin,tipo").maybeSingle();
     if(error || !data) return null;
     conta = data; applyConta();
     if(conta.admin) loadAdmin();
     return conta;
   }
   $("deviceWho").addEventListener("change", e=>{ try{ localStorage.setItem(whoKey(), e.target.value); }catch(_){} applyConta(); });
+  let tipoEscolhido = null;
+  $("tipoSeg").addEventListener("click", e=>{
+    const b = e.target.closest("[data-tipoconta]"); if(!b) return;
+    tipoEscolhido = b.dataset.tipoconta;
+    document.querySelectorAll("[data-tipoconta]").forEach(x=>x.setAttribute("aria-pressed", String(x===b)));
+    const solo = tipoEscolhido==="individual";
+    $("nm2Wrap").hidden = solo; $("whoWrap").hidden = solo; $("nm1Lbl").textContent = solo ? "Seu nome" : "Pessoa 1";
+    if(!solo && !$("nm2").value){ $("nm2").focus(); }
+  });
   $("namesForm").addEventListener("submit", async e=>{
     e.preventDefault();
+    const tipo = tipoEscolhido || conta.tipo;
     const n1=$("nm1").value.trim(), n2=$("nm2").value.trim();
-    if(!n1 || !n2){ toast("Preencha os dois nomes"); return; }
-    const {error} = await db.rpc("fin_salvar_nomes", {p_nome1:n1, p_nome2:n2});
+    if(!n1 || (tipo==="casal" && !n2)){ toast(tipo==="casal" ? "Preencha os dois nomes" : "Preencha seu nome"); return; }
+    if(tipo !== conta.tipo){
+      const r = await db.rpc("fin_mudar_tipo", {p_tipo:tipo, p_nome2:n2});
+      if(r.error){ toast("Não deu para mudar o tipo de conta. Confira a internet."); return; }
+      conta.tipo = tipo; conta.nome2 = tipo==="casal" ? n2 : "";
+    }
+    tipoEscolhido = null;
+    const {error} = await db.rpc("fin_salvar_nomes", {p_nome1:n1, p_nome2:tipo==="casal"?n2:""});
     if(error){ toast("Não deu para salvar. Confira a internet."); return; }
     const old = me && me.nome;
-    conta.nome1=n1; conta.nome2=n2;
+    conta.nome1=n1; conta.nome2= conta.tipo==="casal" ? n2 : "";
     if(old && ![n1,n2].includes(old)){ try{ localStorage.setItem(whoKey(), n1); }catch(_){} }
-    applyConta(); render(); toast("Nomes salvos");
+    applyConta(); render(); toast("Salvo");
   });
 
   // ---------- Administrador: só usuário e nomes, nunca finanças ----------
@@ -1807,7 +1844,7 @@ input::placeholder{color:var(--faint)}
     if(error){ $("admList").innerHTML = `<p class="empty">Não deu para carregar a lista.</p>`; return; }
     $("admList").innerHTML = data.map(c=>`<div class="adm-row">
       <div class="adm-top"><span><b>${esc(c.usuario)}</b>${c.admin?'<span class="tag">você</span>':""}</span><span class="hint">último acesso: ${esc(fmtData(c.ultimo_acesso))}</span></div>
-      <span class="hint">${esc(c.nome1)} e ${esc(c.nome2)} · criada em ${esc(fmtData(c.criado_em))}</span>
+      <span class="hint">${c.tipo==="individual" ? "Individual: "+esc(c.nome1) : "Casal: "+esc(c.nome1)+" e "+esc(c.nome2)} · criada em ${esc(fmtData(c.criado_em))}</span>
       ${c.admin?"":`<div class="row-actions">
         <button class="chip-btn" data-admpw="${esc(c.usuario)}">Trocar senha</button>
         <button class="chip-btn" data-admdel="${esc(c.usuario)}">Excluir conta</button>
@@ -1817,26 +1854,32 @@ input::placeholder{color:var(--faint)}
         <button class="chip-btn" type="submit">Salvar</button>
       </form>
       <div class="inline-form" data-admdelbox="${esc(c.usuario)}" hidden>
-        <span class="danger" style="font-size:13px">Apaga a conta e todos os dados deste casal. Não tem como desfazer.</span>
+        <span class="danger" style="font-size:13px">Apaga a conta e todos os dados dela. Não tem como desfazer.</span>
         <button class="chip-btn" data-admdelok="${esc(c.usuario)}" style="color:var(--out);border-color:var(--out)">Excluir de vez</button>
       </div>`}
     </div>`).join("");
   }
-  $("admNewBtn").onclick = ()=>{ $("admForm").hidden=false; $("admErr").textContent=""; ["admUser","admN1","admN2","admPw"].forEach(i=>$(i).value=""); $("admUser").focus(); };
+  let admTipo = "casal";
+  function setAdmTipo(t){ admTipo=t; document.querySelectorAll("[data-admtipo]").forEach(b=>b.setAttribute("aria-pressed", String(b.dataset.admtipo===t)));
+    $("admN2Wrap").hidden = t==="individual"; $("admN1Lbl").textContent = t==="individual" ? "Nome" : "Pessoa 1";
+    $("admUser").placeholder = t==="individual" ? "ex.: carlos.silva" : "ex.: ana.e.beto"; }
+  $("admForm").addEventListener("click", e=>{ const b=e.target.closest("[data-admtipo]"); if(b) setAdmTipo(b.dataset.admtipo); });
+  $("admNewBtn").onclick = ()=>{ $("admForm").hidden=false; $("admErr").textContent=""; ["admUser","admN1","admN2","admPw"].forEach(i=>$(i).value=""); setAdmTipo("casal"); $("admUser").focus(); };
   $("admCancel").onclick = ()=>{ $("admForm").hidden=true; };
   const ADM_ERR = m => /usuario_invalido/.test(m) ? "Usuário: use de 3 a 30 letras minúsculas, números, ponto, traço ou _ (sem espaço e sem acento)."
     : /usuario_existe/.test(m) ? "Esse usuário já existe. Escolha outro."
     : /senha_curta/.test(m) ? "A senha precisa ter pelo menos 6 caracteres."
     : /sem_permissao/.test(m) ? "Só o administrador pode fazer isso."
+    : /nome_vazio/.test(m) ? "Preencha o nome."
     : "Não deu agora. Confira a internet.";
   $("admForm").addEventListener("submit", async e=>{
     e.preventDefault();
     const u=$("admUser").value.trim().toLowerCase(), pw=$("admPw").value;
     $("admSave").disabled=true;
-    const {error} = await db.rpc("fin_admin_criar", {p_usuario:u, p_senha:pw, p_nome1:$("admN1").value, p_nome2:$("admN2").value});
+    const {error} = await db.rpc("fin_admin_criar", {p_usuario:u, p_senha:pw, p_nome1:$("admN1").value, p_nome2: admTipo==="casal" ? $("admN2").value : "", p_tipo: admTipo});
     $("admSave").disabled=false;
     if(error){ $("admErr").textContent = ADM_ERR(error.message||""); return; }
-    $("admForm").hidden=true; toast(`Conta ${u} criada. Passe o usuário e a senha para o casal.`); loadAdmin();
+    $("admForm").hidden=true; toast(`Conta ${u} criada. Passe o usuário e a senha para ${admTipo==="casal"?"o casal":"a pessoa"}.`); loadAdmin();
   });
   $("admList").addEventListener("click", async e=>{
     const pw = e.target.closest("[data-admpw]");
@@ -1893,7 +1936,7 @@ input::placeholder{color:var(--faint)}
   }
   function showLogin(){
     if(channel){ db.removeChannel(channel); channel=null; }
-    all = []; goals = []; me = null; conta = null; uid = null; loaded = false; $("adminCard").hidden = true; $("admList").innerHTML = ""; document.body.classList.add("loading");
+    all = []; goals = []; me = null; conta = null; uid = null; loaded = false; document.body.classList.remove("solo"); $("adminCard").hidden = true; $("admList").innerHTML = ""; document.body.classList.add("loading");
     $("appView").hidden = true; $("loginView").hidden = false;
     hideSplash();
   }
@@ -1925,15 +1968,18 @@ input::placeholder{color:var(--faint)}
     $("lBtn").disabled = false;
     if(error) $("lErr").textContent = /invalid/i.test(error.message) ? "Usuário ou senha errados." : "Não deu para entrar agora. Confira a internet.";
   });
+  let stTipo = "casal";
+  $("stTipo").addEventListener("click", e=>{ const b=e.target.closest("[data-sttipo]"); if(!b) return; stTipo=b.dataset.sttipo;
+    document.querySelectorAll("[data-sttipo]").forEach(x=>x.setAttribute("aria-pressed", String(x===b))); $("stN2Wrap").hidden = stTipo==="individual"; });
   $("setupForm").addEventListener("submit", async e=>{
     e.preventDefault();
     const u=$("stUser").value.trim().toLowerCase(), a=$("stS1").value, b=$("stS2").value;
     if(!/^[a-z0-9._-]{3,30}$/.test(u)){ $("stErr").textContent="Usuário: de 3 a 30 letras minúsculas, números, ponto, traço ou _ (sem espaço e sem acento)."; return; }
-    if(!$("stN1").value.trim() || !$("stN2").value.trim()){ $("stErr").textContent="Preencha os dois nomes."; return; }
+    if(!$("stN1").value.trim() || (stTipo==="casal" && !$("stN2").value.trim())){ $("stErr").textContent= stTipo==="casal" ? "Preencha os dois nomes." : "Preencha seu nome."; return; }
     if(a.length<6){ $("stErr").textContent="A senha precisa ter pelo menos 6 caracteres."; return; }
     if(a!==b){ $("stErr").textContent="As duas senhas estão diferentes."; return; }
     $("stBtn").disabled = true; $("stErr").textContent="";
-    const {error} = await db.rpc("fin_primeiro_acesso", {p_usuario:u, p_senha:a, p_nome1:$("stN1").value, p_nome2:$("stN2").value});
+    const {error} = await db.rpc("fin_primeiro_acesso", {p_usuario:u, p_senha:a, p_nome1:$("stN1").value, p_nome2: stTipo==="casal" ? $("stN2").value : "", p_tipo: stTipo});
     if(error){ $("stBtn").disabled=false; $("stErr").textContent = /ja_configurado/.test(error.message) ? "O app já foi configurado. Use Entrar." : ADM_ERR(error.message||""); if(/ja_configurado/.test(error.message)) showForm("loginForm"); return; }
     const r = await db.auth.signInWithPassword({ email: toEmail(u), password: a });
     $("stBtn").disabled = false;
@@ -1948,7 +1994,7 @@ input::placeholder{color:var(--faint)}
     if(a!==b){ $("pwErr").textContent="As duas senhas estão diferentes."; return; }
     const {error} = await db.auth.updateUser({ password:a });
     if(error){ $("pwErr").textContent="Não deu para trocar agora. Saia, entre de novo e tente outra vez."; return; }
-    $("pw1").value=$("pw2").value=""; $("pwForm").hidden=true; toast("Senha trocada. Avise a outra pessoa do casal.");
+    $("pw1").value=$("pw2").value=""; $("pwForm").hidden=true; toast(P("Senha trocada. Avise a outra pessoa do casal.","Senha trocada."));
   });
   let current; // undefined até a primeira resposta do login
   db.auth.onAuthStateChange((ev, session)=>{
